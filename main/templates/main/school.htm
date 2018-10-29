@@ -1,0 +1,32 @@
+{% extends 'main/base.htm' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}{{ sch.abbr.upper }}{% endblock %}
+{% block l3h %}{{ sch }}{% endblock %}
+
+
+{% block content %}	
+
+  {% if course_list %}
+    <ul class="list-group">
+      {% for c in course_list %}
+        <li class="list-group-item"><a href="../c/{{ c.code }}">{{ c }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no courses.</p>
+  {% endif %}	
+
+  {% if user.is_authenticated %}
+    <button type="button" id="course-modal-btn" class="btn btn-primary" data-toggle="modal" data-target="#courseModal">
+      Add
+    </button>
+    <div id="course-modal"></div>
+  {% endif %}
+
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'main/js/school.js' %}"></script>
+{% endblock %}

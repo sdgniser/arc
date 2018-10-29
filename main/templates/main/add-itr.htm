@@ -1,0 +1,12 @@
+{% extends 'main/base.htm' %}
+
+{% block title %}Add a new iteration{% endblock %}
+{% block l3h %} Add a new iteration of {{ crs.Code }} {% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

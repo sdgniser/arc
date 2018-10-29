@@ -1,0 +1,1 @@
+Visit this URL to verify your email address: {{ dmn }}/u/verify/{{ user.pk }}/{{ vid }}

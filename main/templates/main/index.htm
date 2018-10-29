@@ -1,0 +1,16 @@
+{% extends 'main/base.htm' %}
+
+{% block title %}Home{% endblock %}
+{% block l3h %}Schools:{% endblock %}
+
+{% block content %}
+	{% if school_list %}
+		<ul class="list-group">
+		{% for school in school_list %}
+			<li class="list-group-item"><a href="s/{{ school.abbr }}">{{ school.name }}</a></li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>There are no schools.</p>
+	{% endif %}
+{% endblock %}

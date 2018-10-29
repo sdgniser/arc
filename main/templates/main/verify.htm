@@ -1,0 +1,8 @@
+{% extends 'main/base.htm' %}
+
+{% block title %}Verification{% endblock %}
+{% block l3h %}Verify  email address{% endblock %}
+
+{% block content %}
+Click <a href="{{ dmn }}/u/verify/{{ user.pk }}/{{ vid }}">here</a> to verify your email address.
+{% endblock %}
