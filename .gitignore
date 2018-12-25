@@ -9,6 +9,6 @@ local_settings.py
 db.sqlite3
 
 arc/keys.py
-arc/main.py
+arc/mail.py
 static/
 uploads/
