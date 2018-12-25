@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views import generic
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, authenticate
+
+from urllib.parse import urlencode
 
 from authtools.models import User
 from authtools.forms import UserCreationForm
@@ -24,7 +26,7 @@ def index_view(request):
 def school_view(request, abbrev):
     try:
         s = School.objects.get(abbr=abbrev)
-        courses = Course.objects.filter(school=s).order_by('code')
+        courses = Course.objects.filter(school=s, appr=True).order_by('code')
         form = CourseForm()
         return render(request, 'main/school.htm', {'sch': s, 'course_list': courses, 'form': form})
     except School.DoesNotExist:
@@ -32,29 +34,68 @@ def school_view(request, abbrev):
 
 def course_view(request, cd):
     try:
+        form = None
+        if request.user is not None:
+            form = ItrForm()
         c = Course.objects.get(code=cd)
-        itrs = Itr.objects.filter(course__code=cd).order_by('year', 'sem')
-        return render(request, 'main/course.htm', {'crs': c, 'itr_list': itrs})
+        itrs = Itr.objects.filter(course__code=cd, appr=True).order_by('year', 'sem')
+        return render(request, 'main/course.htm', {'crs': c, 'itr_list': itrs, 'form': form})
     except Course.DoesNotExist:
         raise Http404("Course not found")
 
 def itr_view(request, cd, yr, sea):
     try:
-        s = REV_DICT_SEMS[sea].lower()
+        s = REV_DICT_SEMS[sea.title()]
         i = Itr.objects.get(course__code = cd, year=yr, sem=s)
         items = Item.objects.filter(itr=i)
+        comments = Comment.objects.filter(itr=i, vis=True)
         dmn = get_current_site(request).domain
-        return render(request, 'main/itr.htm', {'itr': i, 'item_list': items, dmn: 'dmn'})
+        form = None
+        if request.user is not None:
+            form = CommentForm()
+        return render(request, 'main/itr.htm', {'itr': i, 'item_list': items, 'comm_list': comments, 'form': form})
     except Itr.DoesNotExist:
-        Http404('Page not found')
+        return Http404('No such iteration was found')
+
+def user_view(request, uid):
+    try:
+        u = User.objects.get(id = uid)
+        return render(request, 'main/user.htm', {'user_page': u})
+    except User.DoesNotExist:
+        return HttpResponse('User not found')
+
+def add_comment(request, cd, yr, sea):
+    url = reverse('itr', args=[cd, yr, sea])
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            if request.user is not None:
+                comm =  form.save(commit=False)
+                comm.user = request.user
+                s = REV_DICT_SEMS[sea.title()]
+                i = Itr.objects.get(course__code = cd, year=yr, sem=s)
+                comm.itr = i 
+                comm.save()
+                return redirect(url)
+                return render(request, 'main/itr.htm', {'crs': c, 'itr': itr, 'success': True})
+            else:
+                return HttpResponse('User is none')
+
+def delete_comment(request, cid):
+    c = Comment.objects.get(id = cid)
+    if request.user == c.user:
+        c.vis = False
+        c.save()
+        return HttpResponse('<div class="alert alert-success"> Comment successfully deleted </div>')
 
 from django import forms
 class EmailForm(forms.Form):
     email = forms.EmailField()
 
 def signup(request):
+    if request.user is not None and request.user.is_authenticated:
+        return redirect('/?su=li')
     if request.method == 'POST':
-
         emailForm = EmailForm(request.POST)
         if emailForm.is_valid():
             try:
@@ -82,13 +123,17 @@ def signup(request):
             dmn = get_current_site(request).domain
             htm = render_to_string('main/verify.htm', {'user': user, 'vid': uvid, 'dmn': dmn})
             txt = render_to_string('main/verify.txt', {'user': user, 'vid': uvid, 'dmn': dmn})
-            mfrom = 'code@niser.ac.in'
+            mfrom = 'NISER Archive'
             mto = user.email
             msg = EmailMultiAlternatives(subj, txt, mfrom, [mto])
             #msg.attach_alternative(htm, 'text/html')
             msg.send()
             #send_mail(subj, txt, 'code@niser.ac.in', [mto], html_message=htm)
-            return HttpResponse('We have sent an email. Please confirm your email address to complete the registration')
+            base_url = reverse('home')
+            query_string =  urlencode({'su': True})
+            url = '{}?{}'.format(base_url, query_string)
+            return redirect(url)
+            #return HttpResponse('We have sent an email. Please confirm your email address to complete the registration')
     else:
         form = UserCreationForm()
     return render(request, 'main/signup.htm', {'form': form})
@@ -102,27 +147,30 @@ def verify(request, uid, vid):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('home')
+        base_url = reverse('home')
+        query_string =  urlencode({'ver': True})
+        url = '{}?{}'.format(base_url, query_string)
+        return redirect(url)
         #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
 
 def add_item(request, cd, yr, sea):
+    i = Itr.objects.get(course__code=cd, year=yr, sem=REV_DICT_SEMS[sea.title()])
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             if request.user is not None:
-                i = Itr.objects.get(course__code=cd, year=yr, sem=REV_DICT_SEMS[sea])
                 item = form.save(commit=False)
                 item.op = request.user
                 item.itr = i
                 item.save()
-                return HttpResponse('File uploaded successfully.')
+                return render(request, 'main/add-item.htm', {'itr': i, 'item': item, 'success': True})
             else:
                 return HttpResponse('User is none')
     else:
         form = ItemForm()
-    return render(request, 'main/add.htm', {'form': form})
+    return render(request, 'main/add-item.htm', {'itr': i, 'form': form})
 
 def add_itr(request, cd):
     c = Course.objects.get(code=cd)
@@ -134,7 +182,7 @@ def add_itr(request, cd):
                 itr.op = request.user
                 itr.course = c
                 itr.save()
-                return HttpResponse('Iteration added successfully')
+                return render(request, 'main/add-itr.htm', {'crs': c, 'itr': itr, 'success': True})
             else:
                 return HttpResponse('User is none')
     else:

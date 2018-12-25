@@ -14,6 +14,7 @@ urlpatterns = [
 
     path('', include('authtools.urls')),
 
+    path('u/<uid>/', views.user_view, name='user'),
     path('u/verify/<uid>/<vid>/', views.verify, name='verify'),
 
     path('s/<abbrev>/', views.school_view, name='school'),
@@ -23,5 +24,8 @@ urlpatterns = [
     path('c/<cd>/add/', views.add_itr, name='add_itr'),
 
     path('c/<cd>/<yr>/<sea>/', views.itr_view, name='itr'),
-    path('c/<cd>/<yr>/<sea>/add/', views.add_item, name='add'),
+    path('c/<cd>/<yr>/<sea>/add/', views.add_item, name='add_item'),
+    path('c/<cd>/<yr>/<sea>/comment/', views.add_comment, name='comment'),
+
+    path('comm_del/<cid>/', views.delete_comment, name='delete_comment')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

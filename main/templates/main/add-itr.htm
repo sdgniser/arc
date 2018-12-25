@@ -1,12 +1,41 @@
-{% extends 'main/base.htm' %}
+{% load widget_tweaks %}
 
-{% block title %}Add a new iteration{% endblock %}
-{% block l3h %} Add a new iteration of {{ crs.Code }} {% endblock %}
+{% if success %}
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Iteration added.</h4>
+  <p>The the iteration has been added.</p>
+  <hr>
+  <p class="mb-0">But, it will be reviewed by a moderator before its added to the main list.</p>
+</div>
+{% else %}
 
-{% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Submit</button>
-</form>
-{% endblock %}
+  {% if form.errors %}
+
+    {% for field in form %}
+      {% for error in field.errors %}
+        <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+    {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+      </div>
+    {% endfor %}
+
+  {% endif %}
+
+  <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{field|add_class:'form-control'}}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+
+{% endif %}

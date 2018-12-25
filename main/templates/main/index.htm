@@ -1,16 +1,29 @@
 {% extends 'main/base.htm' %}
 
+{% block alerts %}
+  {% if request.GET.ver == 'True' %}
+    <div class="alert alert-success">Your email address has been verified.</div>
+  {% endif %}
+  {% if request.GET.su == 'True' %}
+    <div class="alert alert-primary">Thank you for signing up. We have sent you a verification email.</div>
+  {% endif %}
+{% endblock %}
+
+{% block alert-info %}
+{% endblock %}
+
 {% block title %}Home{% endblock %}
 {% block l3h %}Schools:{% endblock %}
 
 {% block content %}
-	{% if school_list %}
-		<ul class="list-group">
-		{% for school in school_list %}
-			<li class="list-group-item"><a href="s/{{ school.abbr }}">{{ school.name }}</a></li>
-		{% endfor %}
-		</ul>
-	{% else %}
-		<p>There are no schools.</p>
-	{% endif %}
+  {% if school_list %}
+    <ul class="list-group">
+    {% for school in school_list %}
+      <li class="list-group-item"><a href="s/{{ school.abbr }}">{{ school.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no schools.</p>
+  {% endif %}
+
 {% endblock %}

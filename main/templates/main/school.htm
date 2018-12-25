@@ -5,13 +5,12 @@
 {% block title %}{{ sch.abbr.upper }}{% endblock %}
 {% block l3h %}{{ sch }}{% endblock %}
 
-
 {% block content %}	
 
   {% if course_list %}
     <ul class="list-group">
       {% for c in course_list %}
-        <li class="list-group-item"><a href="../c/{{ c.code }}">{{ c }}</a></li>
+        <li class="list-group-item"><a href="{% url 'course' c.code %}">{{ c }}</a></li>
       {% endfor %}
     </ul>
   {% else %}
@@ -19,10 +18,33 @@
   {% endif %}	
 
   {% if user.is_authenticated %}
-    <button type="button" id="course-modal-btn" class="btn btn-primary" data-toggle="modal" data-target="#courseModal">
+    <br>
+    <button type="button" id="course-modal-btn" class="btn btn-primary" data-toggle="modal" data-target="#course-modal-inner">
       Add
     </button>
-    <div id="course-modal"></div>
+    <br>
+    <div id="course-modal">
+      <div class="modal fade" id="course-modal-inner" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="course-modal-header">
+                Add a new course to {{ sch.abbr.upper }}
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body" id="course-modal-body">
+            </div>
+
+            <div class="modal-footer" id="course-modal-footer">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 
 {% endblock %}

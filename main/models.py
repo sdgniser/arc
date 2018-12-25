@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-import datetime, json
+import json
 
 ITEM_TYPES = [
     ('a', 'Quiz'),
@@ -54,7 +54,7 @@ class Itr(models.Model):
 
     op = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    sem = models.CharField('Semester', max_length=1, choices = SEMS, default='FA')
+    sem = models.CharField('Semester', max_length=2, choices = SEMS, default='FA')
     year = models.CharField('Year', max_length=4)
     inst = models.CharField('Instructor', max_length=32)
     appr = models.BooleanField(default=False)
@@ -64,10 +64,10 @@ class Item(models.Model):
         return self.typ
     op = models.ForeignKey(User, on_delete=models.CASCADE)
     itr = models.ForeignKey(Itr, on_delete=models.CASCADE)
-    name = models.CharField(max_length = 64)
-    typ = models.CharField('Type', max_length=3, choices = ITEM_TYPES, default='a')
-    num = models.SmallIntegerField('Number', choices = [(i, i) for i in range(1, 11)], default = 1)
     fl = models.FileField('File', upload_to='')
+    name = models.CharField('Name', max_length=64)
+    typ = models.CharField('Type', max_length=3, choices = ITEM_TYPES, default='a')
+    desc = models.TextField('Description', max_length=1000, blank=True)
     appr = models.BooleanField(default=False)
 
 class SolItem(Item):
@@ -90,14 +90,27 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     instance.profile.save()
 
-class Log(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    ip = models.GenericIPAddressField(null=True)
-    ts = models.DateTimeField(default=timezone.now)
-
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     itr = models.ForeignKey(Itr, on_delete=models.CASCADE)
     text = models.TextField(max_length=1000, blank=False)
     posted = models.DateTimeField(default=timezone.now)
-    vis = models.BooleanField(default=False)
+    vis = models.BooleanField(default=True)
+
+class CommentReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    info = models.TextField(max_length=1000, blank=True)
+    time = models.DateTimeField(default=timezone.now)
+
+class ItemReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    info = models.TextField(max_length=1000, blank=True)
+    time = models.DateTimeField(default=timezone.now)
+
+class UserReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reporter')
+    target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
+    info = models.TextField(max_length=1000, blank=True)
+    time = models.DateTimeField(default=timezone.now)

@@ -1,19 +1,54 @@
 {% extends 'main/base.htm' %}
+{% load widget_tweaks %}
+{% load static %}
 
 {% block title %}{{ crs }}{% endblock %}
 {% block l3h %}{{ crs }}{% endblock %}
 
 {% block content %}	
   {% if itr_list %}
-    <ul>
-    {% for i in itr_list %}
-      <li><a href="{% url 'itr' i.course.code i.year i.sem_name %}">{{ i.sem_name.title }}, {{i.year }}</a></li>
-    {% endfor %}
+    <ul class="list-group">
+      {% for i in itr_list %}
+        <li class="list-group-item"><a href="{% url 'itr' crs.code i.year i.sem_name.lower %}">{{ i }}</a></li>
+      {% endfor %}
     </ul>
   {% else %}
     <p>There are no iterations.</p>
   {% endif %}
+
   {% if user.is_authenticated %}
-    <a href="{{ crs.code }}/add"> <span class="oi oi-plus"></span> Add a new iteration </a>
+    <br>
+    <button type="button" id="itr-modal-btn" class="btn btn-primary" data-toggle="modal" data-target="#itr-modal-inner">
+      Add
+    </button>
+    <br>
+
+    <!-- add-itr modal -->
+    <div id="itr-modal">
+      <div class="modal fade" id="itr-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="itr-modal-header"> Add a new iteration to {{ crs.code.upper }} </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body" id="itr-modal-body">
+            </div>
+
+            <div class="modal-footer" id="itr-modal-footer">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end add-itr modal -->
+
   {% endif %}
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'main/js/course.js' %}"></script>
 {% endblock %}

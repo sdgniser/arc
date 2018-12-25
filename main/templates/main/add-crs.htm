@@ -1,32 +1,21 @@
-{% extends 'main/modal-base.htm' %}
 {% load widget_tweaks %}
 
-{% block id %}course-modal-inner{% endblock %}
-
-{% block header %} Add a new course to {{ sch.abbr.upper }} {% endblock %}
-
-{% block body %}
-
-  {% if success %}
-    <div class="alert alert-success" role="alert">
-      <h4 class="alert-heading">Course added.</h4>
-      <p>The course has been added {{ crs }} has been added.</p>
-      <hr>
-      <p class="mb-0">But, it will be reviewed by a moderator before its added to the main list.</p>
+{% if success %}
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Course added.</h4>
+  <p>The course {{ crs }} has been added.</p>
+  <hr>
+  <p class="mb-0">But, it will be reviewed by a moderator before its added to the main list.</p>
+</div>
+{% else %}
+<form id="course-form" method="post" action="{% url 'school' sch.abbr %}add/">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{field|add_class:'form-control'}}
     </div>
-  {% else %}
-    <form id="course-form" method="post" action="{% url 'school' sch.abbr %}add/">
-      {% csrf_token %}
-      {% for field in form %}
-        <div class="form-group">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{field|add_class:'form-control'}}
-        </div>
-      {% endfor %}
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
   {% endfor %}
-
-{% endblock %}
-
-{% block footer %} {% endblock %}
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+{% endif %}

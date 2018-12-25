@@ -1,0 +1,12 @@
+{% extends 'main/base.htm' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{{ user_page.name }}{% endblock %}
+{% block l3h %}{{ user_page.name }}{% endblock %}
+{% block l5h %}{{ user_page.email }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'main/css/user.css' %}">{% endblock %}
+
+{% block content %}
+  {{ user_page }}
+{% endblock %}

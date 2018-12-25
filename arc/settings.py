@@ -24,8 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.31.253', 'localhost']
-
+ALLOWED_HOSTS = ['10.42.0.1', 'localhost']
 
 # Application definition
 
@@ -80,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'db',
-        'USER': 'kss',
+        'USER': 'admin',
         'HOST': 'localhost',
         'PORT': '5432',
     }
