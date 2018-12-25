@@ -8,7 +8,7 @@ local_settings.py
 .env
 db.sqlite3
 
-arc/keys.py
-arc/mail.py
-static/
-uploads/
+/arc/keys.py
+/arc/mail.py
+/static/
+/uploads/
