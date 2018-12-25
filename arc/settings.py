@@ -118,20 +118,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-#STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/kss/public_html/arc/static'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+MEDIA_URL = '/uploads/'
 
 AUTH_USER_MODEL = 'authtools.User'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
-MEDIA_ROOT = '/home/kss/public_html/arc/uploads/'
-MEDIA_URL = '/uploads/'
 
 from .mail import *
 from .keys import SECRET_KEY
