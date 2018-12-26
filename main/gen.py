@@ -3,8 +3,10 @@ from random import choice
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 ASSETS = os.path.join(ROOT, 'assets')
-ADJECTIVES_FILENAMES = ['3la', '4la', 'ma34']
-NOUNS_FILENAMES = ['3ln', '4ln', 'mm34']
+#ADJECTIVES_FILENAMES = ['3la', '4la', 'ma34']
+ADJECTIVES_FILENAMES = ['simple-adj']
+#NOUNS_FILENAMES = ['3ln', '4ln', 'mm34']
+NOUNS_FILENAMES = ['wiki-animals-34']
 ADJECTIVES_FILES = map(lambda i: os.path.join(ASSETS, i), ADJECTIVES_FILENAMES)
 NOUNS_FILES = map(lambda i: os.path.join(ASSETS, i), NOUNS_FILENAMES)
 

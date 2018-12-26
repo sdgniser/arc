@@ -5,7 +5,7 @@ function escapeHtml(t) {
             .replace(/>/g, "&gt;");
             //.replace(/"/g, "&quot;")
             //.replace(/'/g, "&#039;");
- }
+}
 
 $('.oi-warning').click(function() {
 
@@ -60,24 +60,31 @@ $(document).ready(function(){
         $.ajax({
             type: "GET",
             url: "add/",
+            beforeSend: function() {
+                $("#item-modal-body-inner").html();
+            },
             error: function(response, ts, et) {
                 console.log("error");
                 console.log(response);
             },
             success: function (response) {
-                $('#item-modal-body').html(response);
+                $('#item-modal-body-inner').html(response);
                 $('#item-modal-inner').modal();
 
                 $("#item-form").submit(function(e) {
                     e.preventDefault();
                     var form = $(this);
-                    var formData = new FormData();
+                    var formData = new FormData(this);
                     var url = form.attr('action');
 
                     $.ajax({
                         type: "POST",
                         url: url,
-                        data: form.serialize(),
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function() {
+                        },
                         xhr: function () {
                             var nxhr = $.ajaxSettings.xhr();
                             if (nxhr.upload) {
@@ -86,13 +93,10 @@ $(document).ready(function(){
                             return nxhr;
                         },
                         error: function(response, ts, et) {
-                            alert("errror");
-                            console.log("error");
-                            console.log(response);
+                            $('#item-modal-body-inner').html(response);
                         },
                         success: function(response) {
-                            console.log(response);
-                            $('#item-modal-body').html(response);
+                            $('#item-modal-body-inner').html(response);
                         }
                     });
                 });
@@ -105,11 +109,10 @@ function uploadProgress(e) {
     var percent = 0;
     var position = e.loaded || e.position;
     var total = e.total;
-    var progress_bar_id = "#progress-wrp";
     if (e.lengthComputable) {
         percent = Math.ceil(position / total * 100);
     }
-    // update progressbars classes so it fits your code
-    $(progress_bar_id + " .progress-bar").css("width", +percent + "%");
-    $(progress_bar_id + " .status").text(percent + "%");
+    $("#item-progress-bar").css("width", +percent+"%");
+    $("#item-progress-bar").attr("aria-valuenow", +percent);
+    $("#item-progress-bar").text(percent+"%");
 }

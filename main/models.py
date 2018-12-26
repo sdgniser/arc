@@ -59,12 +59,20 @@ class Itr(models.Model):
     inst = models.CharField('Instructor', max_length=32)
     appr = models.BooleanField(default=False)
 
+from . import gen
+def gen_file_name(instance, filename):
+    ext = filename.split('.')[-1]
+    file_name = gen.genURL()
+    while Item.objects.filter(fl__contains = file_name).count() > 0:
+        file_name = gen.genURL()
+    return file_name+'.'+ext
+
 class Item(models.Model):
     def __str__(self):
         return self.typ
     op = models.ForeignKey(User, on_delete=models.CASCADE)
     itr = models.ForeignKey(Itr, on_delete=models.CASCADE)
-    fl = models.FileField('File', upload_to='')
+    fl = models.FileField('File', upload_to=gen_file_name)
     name = models.CharField('Name', max_length=64)
     typ = models.CharField('Type', max_length=3, choices = ITEM_TYPES, default='a')
     desc = models.TextField('Description', max_length=1000, blank=True)
