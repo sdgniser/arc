@@ -8,7 +8,7 @@
 }
 
 .del-container {
-  align-items: right;
+  text-align: right;
 }
 
 #item-progress-bar {

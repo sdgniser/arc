@@ -1,5 +1,4 @@
 from django.db import models
-from django.forms import ModelForm
 from authtools.models import User
 from django.utils import timezone
 from django.db.models.signals import post_save
@@ -43,10 +42,10 @@ class Course(models.Model):
 
 class Itr(models.Model):
     def __str__(self):
-        return str(self.course) + ', ' + self.sem_name.title() + ' ' + self.year
+        return str(self.course) + ', ' + self.sem_name + ' ' + self.year
     @property
     def short_name(self):
-        return self.course.code.upper() + ' ' + self.sem_name.title() + ' ' + self.year
+        return self.course.code.upper() + ' ' + self.sem_name + ' ' + self.year
 
     @property
     def sem_name(self):
@@ -105,20 +104,35 @@ class Comment(models.Model):
     posted = models.DateTimeField(default=timezone.now)
     vis = models.BooleanField(default=True)
 
-class CommentReport(models.Model):
+class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    info = models.TextField(max_length=1000, blank=True)
+    time = models.DateTimeField(default=timezone.now)
+
+class CommentReport(Report):
+    TYPE_CHOICES = [
+        ("ab", "Abusive"),
+        ("ma", "Malicious"),
+        ("ot", "Off-Topic"),
+        ("sp", "Spam"),
+        ("oh", "Other"),
+    ]
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    info = models.TextField(max_length=1000, blank=True)
-    time = models.DateTimeField(default=timezone.now)
 
-class ItemReport(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class ItemReport(Report):
+    TYPE_CHOICES = [
+        ("ma", "Malicious"),
+        ("ur", "Unrelated"),
+        ("du", "Duplicate"),
+        ("sp", "Spam"),
+        ("oh", "Other"),
+    ]
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    info = models.TextField(max_length=1000, blank=True)
-    time = models.DateTimeField(default=timezone.now)
 
-class UserReport(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reporter')
+class UserReport(Report):
+    TYPE_CHOICES = [
+        ("ab", "Abusive"),
+        ("im", "Imposter"),
+        ("oh", "Other"),
+    ]
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
-    info = models.TextField(max_length=1000, blank=True)
-    time = models.DateTimeField(default=timezone.now)

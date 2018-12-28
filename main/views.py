@@ -49,7 +49,6 @@ def itr_view(request, cd, yr, sea):
         i = Itr.objects.get(course__code = cd, year=yr, sem=s)
         items = Item.objects.filter(itr=i)
         comments = Comment.objects.filter(itr=i, vis=True)
-        dmn = get_current_site(request).domain
         form = None
         if request.user is not None:
             form = CommentForm()
@@ -206,3 +205,19 @@ def add_crs(request, abbrev):
     else:
         form = CourseForm()
     return render(request, 'main/add-crs.htm', {'sch': s, 'form': form})
+
+def file_view(request, fname):
+    try:
+        i = Item.objects.get(fl = fname)
+        return render(request, 'main/file.htm', {'item': i})
+    except Item.DoesNotExist:
+        return Http404("File not found")
+
+def report_comment(request, cid):
+    pass
+
+def report_item(request, iid):
+    pass
+
+def report_user(request, uid):
+    pass

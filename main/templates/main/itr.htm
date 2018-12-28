@@ -9,9 +9,9 @@
 
 {% block content %}	
   {% if item_list %}
-    <ul>
+    <ul class="list-group">
     {% for i in item_list %}
-    <li><a href="{{ dmn }}/uploads/{{ i.fl.name }}">{{ i.fl.name }}</a></li>
+    <li class="list-group-item"><a href="{{ i.fl.url }}">{{ i.fl.name }}</a></li>
     {% endfor %}
     </ul>
   {% else %}
@@ -114,9 +114,13 @@
           </div>
 
           <div class="modal-body" id="item-modal-body">
-            <div id="item-modal-body-inner">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+            <div class="modal-body-inner" id="item-modal-body-inner">
+              <div class="container">
+                <div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
               </div>
             </div>
             <div id="item-progress" class="progress mr-auto">
@@ -145,9 +149,13 @@
           </div>
 
           <div class="modal-body" id="report-modal-body">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+            <div class="container">
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
               </div>
+            </div>
           </div>
 
           <div class="modal-footer" id="report-modal-footer">
