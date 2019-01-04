@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from main.models import Item, Course, Itr, Comment
+from main.models import *
 
 class ItemForm(ModelForm):
     class Meta:
@@ -29,3 +29,8 @@ class CommentForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs.update({'rows': '3'})
+
+class CommentReportForm(ModelForm):
+    class Meta:
+        model = CommentReport
+        fields = ['typ', 'desc']

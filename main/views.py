@@ -50,9 +50,16 @@ def itr_view(request, cd, yr, sea):
         items = Item.objects.filter(itr=i)
         comments = Comment.objects.filter(itr=i, vis=True)
         form = None
+        form2 = CommentReportForm()
         if request.user is not None:
             form = CommentForm()
-        return render(request, 'main/itr.htm', {'itr': i, 'item_list': items, 'comm_list': comments, 'form': form})
+        return render(request, 'main/itr.htm', {
+            'itr': i,
+            'item_list': items,
+            'comm_list': comments,
+            'form': form,
+            'report_form': form2
+            })
     except Itr.DoesNotExist:
         return Http404('No such iteration was found')
 
@@ -214,7 +221,7 @@ def file_view(request, fname):
         return Http404("File not found")
 
 def report_comment(request, cid):
-    pass
+    return HttpResponse("Reported! #$@$%#@! Enjoy VACation. cyka blyat.")
 
 def report_item(request, iid):
     pass

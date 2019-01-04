@@ -31,7 +31,7 @@ urlpatterns = [
 
     path('f/<fname>/', views.file_view, name='file'),
 
-    path('report/c/<id>/', views.report_comment, name='report_comment'),
-    path('report/i/<id>/', views.report_item, name='report_item'),
-    path('report/u/<id>/', views.report_user, name='report_user'),
+    path('report/c/<cid>/', views.report_comment, name='report_comment'),
+    path('report/i/<iid>/', views.report_item, name='report_item'),
+    path('report/u/<uid>/', views.report_user, name='report_user'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

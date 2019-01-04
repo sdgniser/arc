@@ -106,7 +106,7 @@ class Comment(models.Model):
 
 class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    info = models.TextField(max_length=1000, blank=True)
+    desc = models.TextField("Description", max_length=1000, blank=True)
     time = models.DateTimeField(default=timezone.now)
 
 class CommentReport(Report):
@@ -118,6 +118,7 @@ class CommentReport(Report):
         ("oh", "Other"),
     ]
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    typ = models.CharField("", max_length=2, choices=TYPE_CHOICES)
 
 class ItemReport(Report):
     TYPE_CHOICES = [
@@ -128,6 +129,7 @@ class ItemReport(Report):
         ("oh", "Other"),
     ]
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    typ = models.CharField(max_length=2, choices=TYPE_CHOICES)
 
 class UserReport(Report):
     TYPE_CHOICES = [
@@ -136,3 +138,4 @@ class UserReport(Report):
         ("oh", "Other"),
     ]
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
+    typ = models.CharField(max_length=2, choices=TYPE_CHOICES)

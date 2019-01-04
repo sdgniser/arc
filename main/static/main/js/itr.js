@@ -8,7 +8,31 @@ function escapeHtml(t) {
 }
 
 $('.oi-warning').click(function() {
+    var id = $(this).attr('id').split('_')[1];
+    $("#comment-report-form").submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = new FormData(this);
 
+        $.ajax({
+            type: "POST",
+            url: "/report/c/"+id+"/",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+            },
+            error: function(response, ts, et) {
+                console.log(ts);
+                console.log(et);
+                $('#report-modal-body-inner').html(response);
+            },
+            success: function(response) {
+                console.log("error2");
+                $('#report-modal-body-inner').html(response);
+            }
+        });
+    });
 });
 
 $("#del-no").click(function() {

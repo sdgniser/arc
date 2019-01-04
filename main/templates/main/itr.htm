@@ -11,7 +11,7 @@
   {% if item_list %}
     <ul class="list-group">
     {% for i in item_list %}
-    <li class="list-group-item"><a href="{{ i.fl.url }}">{{ i.fl.name }}</a></li>
+    <li class="list-group-item"><a href="{{ i.fl.url }}">{{ i.name }}</a></li>
     {% endfor %}
     </ul>
   {% else %}
@@ -51,7 +51,7 @@
                   </div>
                 {% else %}
                   <div class="del-container">
-                    <span class="oi oi-warning" data-toggle="modal" data-target="#report-modal-inner"></span>
+                    <span id="r_{{ c.id }}"class="oi oi-warning" data-toggle="modal" data-target="#report-modal-inner"></span>
                   </div>
                 {% endif %}
               {% endif %}
@@ -149,12 +149,19 @@
           </div>
 
           <div class="modal-body" id="report-modal-body">
-            <div class="container">
-              <div class="text-center">
-                <div class="spinner-border" role="status">
-                  <span class="sr-only">Loading...</span>
+            <div id="report-modal-body-inner" class="container">
+
+              <form id="comment-report-form" method="post" action="">
+              {% csrf_token %}
+              {% for field in report_form %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{field|add_class:'form-control'}}
                 </div>
-              </div>
+              {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+
             </div>
           </div>
 
