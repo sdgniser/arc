@@ -12,3 +12,4 @@ db.sqlite3
 /arc/mail.py
 /static/
 /uploads/
+/main/log
