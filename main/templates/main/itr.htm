@@ -47,18 +47,22 @@
               {% if user.is_authenticated %} 
                 {% if user == c.user %}
                   <div class="del-container">
-                    <span id="d_{{ c.id }}" class="oi oi-trash" data-toggle="modal" data-target="#delete-modal-inner"></span>
+                    <button id="d_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-delete" data-toggle="modal" data-target="#delete-modal-inner">
+                      <span  class="oi oi-trash"></span>
+                    </button>
                   </div>
                 {% else %}
                   <div class="del-container">
-                    <span id="r_{{ c.id }}" class="oi oi-warning" data-toggle="modal" data-target="#report-modal-inner"></span>
+                    <button id="r_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-report" data-toggle="modal" data-target="#report-modal-inner">
+                      <span class="oi oi-warning"></span>
+                    </button>
                   </div>
                 {% endif %}
               {% endif %}
             </div>
           </div>
         </div>
-        <hr class="comment-hr">
+        <!--<hr class="comment-hr">-->
         <div class="markdown">{{ c.text }}</div>
       </div>
     {% endfor %}

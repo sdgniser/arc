@@ -7,7 +7,7 @@ function escapeHtml(t) {
             //.replace(/'/g, "&#039;");
 }
 
-$('.oi-warning').click(function() {
+$('.btn-report').click(function() {
     var id = $(this).attr('id').split('_')[1];
     $("#comment-report-form").submit(function(e) {
         e.preventDefault();
@@ -42,7 +42,7 @@ $("#del-no").click(function() {
 });
 
 
-$('.oi-trash').click(function(e) {
+$('.btn-delete').click(function(e) {
     $("#delete-modal-msg").html("Are you sure you want to delete this comment?");
     $("#delete-modal-msg").attr("class", "alert alert-danger");
     var id = $(this).attr('id').split('_')[1];
