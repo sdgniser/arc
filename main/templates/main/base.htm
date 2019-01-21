@@ -69,10 +69,38 @@
     <span class="text-muted">Coding Club | NISER, Bhubaneswar</span>
     </div>
   </footer>
-  
+
+  <!-- generic modal -->
+    <div id="generic-modal">
+      <div class="modal fade" id="generic-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="generic-modal-header"> Modal Header </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body" id="generic-modal-body">
+              <div id="generic-modal-msg">
+                Modal Message
+              </div>
+            </div>
+
+            <div class="modal-footer" id="generic-modal-footer">
+              Modal Footer
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- end generic modal --> 
+
   <script src="{% static 'main/js/popper.min.js'%}"></script>
   <script src="{% static 'main/js/jquery.min.js'%}"></script>
   <script src="{% static 'main/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'main/js/main.js'%}"></script>
   {% block js %} {% endblock %}
   </body>
 </html>

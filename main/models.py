@@ -110,6 +110,11 @@ class Report(models.Model):
     time = models.DateTimeField(default=timezone.now)
 
 class CommentReport(Report):
+
+    def __str__(self):
+        c = self.comment
+        return str(c.user) + ' | '+ str(c.id) + ' | ' + str(c.text)
+
     TYPE_CHOICES = [
         ("ab", "Abusive"),
         ("ma", "Malicious"),
@@ -118,7 +123,7 @@ class CommentReport(Report):
         ("oh", "Other"),
     ]
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    typ = models.CharField("", max_length=2, choices=TYPE_CHOICES)
+    typ = models.CharField('Type', max_length=2, choices=TYPE_CHOICES)
 
 class ItemReport(Report):
     TYPE_CHOICES = [

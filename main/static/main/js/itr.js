@@ -25,11 +25,13 @@ $('.oi-warning').click(function() {
             error: function(response, ts, et) {
                 console.log(ts);
                 console.log(et);
-                $('#report-modal-body-inner').html(response);
+                $("#report-modal-inner").modal('hide');
+                showModal("Error while reporting", response, "");
             },
             success: function(response) {
                 console.log("error2");
-                $('#report-modal-body-inner').html(response);
+                $("#report-modal-inner").modal('hide');
+                showModal("Comment successfully reported", response, "");
             }
         });
     });

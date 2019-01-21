@@ -221,7 +221,21 @@ def file_view(request, fname):
         return Http404("File not found")
 
 def report_comment(request, cid):
-    return HttpResponse("Reported! #$@$%#@! Enjoy VACation. cyka blyat.")
+    if request.method == 'POST':
+        rep_form = CommentReportForm(request.POST)
+        if rep_form.is_valid():
+            if request.user is not None:
+                try:
+                    c = Comment.objects.get(id=cid)
+                    rep = rep_form.save(commit=False)
+                    rep.user = request.user
+                    rep.comment = c
+                    rep.save()
+                    return HttpResponse('<div class="alert alert-success"> Report submitted successfully. Thanks. </div>')
+                except Comment.DoesNotExist:
+                    return Http404('Comment Not Found')
+            return HttpResponse('User is none')
+    return HttpResponse('You shouldn\'t be here.')
 
 def report_item(request, iid):
     pass
