@@ -27,13 +27,13 @@
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form> -->
 
-      <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+      <ul class="nav navbar-nav flex-row ml-md-auto d-none d-md-flex">
       <!-- <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
       </li> -->
       {% if user.is_authenticated %}
         <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle mr-md-2" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.name }}</a>
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">{{ user.name }}</a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
           <a class="dropdown-item" href="{% url 'user' user.id %}">
             <span class="oi oi-person"></span> Profile
@@ -45,7 +45,7 @@
         </li>
       {% else %}
         <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle mr-md-2" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Not Logged In</a>
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Not Logged In</a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
           <a class="dropdown-item" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}"> <span class="oi oi-account-login"></span> Log In</a>
           <a class="dropdown-item" href="{% url 'signup' %}"> <span class="oi oi-person"></span> Sign Up</a>
