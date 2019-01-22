@@ -132,13 +132,14 @@ $(document).ready(function(){
 });
 
 function uploadProgress(e) {
+    console.log(e);
     var percent = 0;
     var position = e.loaded || e.position;
     var total = e.total;
     if (e.lengthComputable) {
         percent = Math.ceil(position / total * 100);
     }
-    $("#item-progress-bar").css("width", +percent+"%");
-    $("#item-progress-bar").attr("aria-valuenow", +percent);
+    $("#item-progress-bar").css("width", percent+"%");
+    $("#item-progress-bar").attr("aria-valuenow", percent);
     $("#item-progress-bar").text(percent+"%");
 }
