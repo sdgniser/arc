@@ -1,6 +1,17 @@
 from django.forms import ModelForm
 from main.models import *
 
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['school', 'prog', 'batch', 'about']
+    
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs.update({'class': 'form-control'})
+        self.fields['about'].widget.attrs.update({'rows': '2'})
+
 class ItemForm(ModelForm):
     class Meta:
         model = Item
@@ -8,7 +19,10 @@ class ItemForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
-        self.fields['desc'].widget.attrs.update({'rows': '3'})
+        for f in self.fields:
+            if f != 'fl':
+                self.fields[f].widget.attrs.update({'class': 'form-control'})
+        self.fields['desc'].widget.attrs.update({'rows': '2'})
         self.fields['fl'].widget.attrs.update({'class': 'form-control-file'})
 
 class CourseForm(ModelForm):

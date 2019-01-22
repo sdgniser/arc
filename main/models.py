@@ -89,7 +89,12 @@ class Profile(models.Model):
     ip = models.GenericIPAddressField(null=True)
     joined = models.DateTimeField(default=timezone.now)
     data = models.TextField(max_length=2048, null=True)
-    appr = models.BooleanField(default=False)
+    upd = models.BooleanField(default=False)
+    school = models.ForeignKey(School, blank=True, null=True, on_delete=models.SET_NULL)
+    batch = models.SmallIntegerField('Batch', blank=True, null=True)
+    prog = models.CharField('Program', max_length=128, blank=True, null=True)
+    about = models.TextField('About', max_length=2048, blank=True, null=True)
+    karma = models.IntegerField(default=0)
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):

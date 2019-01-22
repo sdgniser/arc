@@ -25,7 +25,7 @@ def index_view(request):
 
 def school_view(request, abbrev):
     try:
-        s = School.objects.get(abbr=abbrev)
+        s = School.objects.get(abbr__iexact=abbrev)
         courses = Course.objects.filter(school=s, appr=True).order_by('code')
         form = CourseForm()
         return render(request, 'main/school.htm', {'sch': s, 'course_list': courses, 'form': form})
@@ -66,9 +66,22 @@ def itr_view(request, cd, yr, sea):
 def user_view(request, uid):
     try:
         u = User.objects.get(id = uid)
+        u2 = request.user
+        if request.method == 'POST':
+            if u2 is not None and u2.is_authenticated and u == u2:
+                form = ProfileForm(request.POST, instance=u.profile)
+                pro = form.save(commit=False)
+                pro.upd = True
+                pro.save()
+                return render(request, 'main/user.htm', {'user_page': u, 'form': form})
+            else:
+                return HttpResponse('You shouldn\'t be here')
+        if u == u2 and request.user.is_authenticated:
+            form = ProfileForm()
+            return render(request, 'main/user.htm', {'user_page': u, 'form': form})
         return render(request, 'main/user.htm', {'user_page': u})
     except User.DoesNotExist:
-        return HttpResponse('User not found')
+        return Http404('User not found')
 
 def add_comment(request, cd, yr, sea):
     url = reverse('itr', args=[cd, yr, sea])

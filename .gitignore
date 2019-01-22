@@ -11,5 +11,6 @@ db.sqlite3
 /arc/keys.py
 /arc/mail.py
 /static/
-/uploads/
+/media/
 /main/log
+/main/migrations

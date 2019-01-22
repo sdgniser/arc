@@ -30,7 +30,7 @@
   {% for field in form %}
     <div class="form-group">
       <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-      {{field|add_class:'form-control'}}
+      {{ field }}
     </div>
   {% endfor %}
   <button class="btn btn-primary" type="submit">Upload</button>

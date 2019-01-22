@@ -8,5 +8,65 @@
 {% block css %}<link rel="stylesheet" href="{% static 'main/css/user.css' %}">{% endblock %}
 
 {% block content %}
-  {{ user_page }}
+  <div id="user-info">
+    About {{ user_page.name }}
+    {% if user_page == user %}
+    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#profile-modal-inner"><span class="oi oi-pencil"> </span></button>
+    {% endif %}
+    <br>
+    {% if user_page.profile.upd %}
+      {{ user_page.profile.school }} <br>
+      {{ user_page.profile.prog }} <br>
+      {{ user_page.profile.batch }} <br>
+      {{ user_page.profile.about }} <br>
+    {% endif %}
+  </div>
+  {% if user_contrib %}
+  <div id="user-contrib">
+    About {{ user_page.name }}'s contributions: <br>
+    <ul class="list-group">
+    {% for f in user_contrib %}
+      <li class="list-group-item"><a href="{{ f.fl.url }}">{{ f.name }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% if user_page == user %}
+  <!-- profile modal -->
+  <div id="profile-modal">
+    <div class="modal fade" id="profile-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="profile-modal-header"> <span class="oi oi-pencil"></span> Edit </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+
+          <div class="modal-body" id="profile-modal-body">
+            <div id="profile-modal-body-inner" class="container">
+
+              <form id="profile-form" method="post" action="">
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{ field }}
+                </div>
+              {% endfor %}
+                <button type="Update" class="btn btn-primary">Submit</button>
+              </form>
+
+            </div>
+          </div>
+
+          <div class="modal-footer" id="profile-modal-footer">
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end profile modal -->
+  {% endif %}
 {% endblock %}
