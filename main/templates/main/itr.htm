@@ -113,7 +113,7 @@
         <div class="modal-content">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="item-modal-header"> Add new content to {{ itr.short_name }} </h5>
+            <h5 class="modal-title" id="item-modal-header"> <span class="oi oi-plus"> </span> Add new content to {{ itr.short_name }} </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
 
@@ -127,6 +127,7 @@
                 </div>
               </div>
             </div>
+            <br>
             <div id="item-progress" class="progress">
               <div id="item-progress-bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
@@ -210,5 +211,4 @@
 
 {% block js %}
   <script type="text/javascript" src="{% static 'main/js/itr.js' %}"></script>
-  <script type="text/javascript" src="{% static 'main/js/showdown.min.js' %}"></script>
 {% endblock %}

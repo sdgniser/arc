@@ -8,3 +8,10 @@ function showModal(head, msg, foot) {
     modalFooter.html(foot);
     modal.modal();
 }
+
+$(document).ready(function() {
+    var converter = new showdown.Converter({strikethrough: true});
+    $(".markdown").each(function() {
+        $(this).html(converter.makeHtml($(this).html()));
+    });
+});

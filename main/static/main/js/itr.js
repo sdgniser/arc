@@ -73,9 +73,6 @@ $('.btn-delete').click(function(e) {
 
 $(document).ready(function() {
     var converter = new showdown.Converter({strikethrough: true});
-    $(".markdown").each(function() {
-        $(this).html(converter.makeHtml($(this).html()));
-    });
     $("#id_text").on("change keyup paste load", function() {
         $("#preview").html(converter.makeHtml(escapeHtml($("#id_text").val())));
     });
@@ -132,7 +129,6 @@ $(document).ready(function(){
 });
 
 function uploadProgress(e) {
-    console.log(e);
     var percent = 0;
     var position = e.loaded || e.position;
     var total = e.total;

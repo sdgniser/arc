@@ -91,9 +91,9 @@ class Profile(models.Model):
     data = models.TextField(max_length=2048, null=True)
     upd = models.BooleanField(default=False)
     school = models.ForeignKey(School, blank=True, null=True, on_delete=models.SET_NULL)
-    batch = models.SmallIntegerField('Batch', blank=True, null=True)
-    prog = models.CharField('Program', max_length=128, blank=True, null=True)
-    about = models.TextField('About', max_length=2048, blank=True, null=True)
+    batch = models.SmallIntegerField('Batch', blank=True, default='')
+    prog = models.CharField('Program', max_length=128, blank=True, default='')
+    about = models.TextField('About', max_length=2048, blank=True, default='')
     karma = models.IntegerField(default=0)
 
 @receiver(post_save, sender=User)
