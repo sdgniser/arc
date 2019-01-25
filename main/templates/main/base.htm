@@ -62,15 +62,8 @@
     <h3>{% block l3h %} {% endblock %}</h3>
     <h5>{% block l5h %} {% endblock %}</h5>
     {% block content %} {% endblock %}
-  </main>
 
-  <footer class="footer">
-    <div class="container">
-    <span class="text-muted">Coding Club | NISER, Bhubaneswar</span>
-    </div>
-  </footer>
-
-  <!-- generic modal -->
+    <!-- generic modal -->
     <div id="generic-modal">
       <div class="modal fade" id="generic-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -95,12 +88,20 @@
         </div>
       </div>
     </div>
-  <!-- end generic modal --> 
+    <!-- end generic modal -->
 
-  <script src="{% static 'main/js/popper.min.js'%}"></script>
-  <script src="{% static 'main/js/jquery.min.js'%}"></script>
-  <script src="{% static 'main/js/bootstrap.min.js'%}"></script>
-  <script type="text/javascript" src="{% static 'main/js/showdown.min.js' %}"></script>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+    <span class="text-muted">Coding Club | NISER, Bhubaneswar</span>
+    </div>
+  </footer>
+
+  <script src="{% static 'main/js/jquery.min.js' %}"></script>
+  <script src="{% static 'main/js/popper.min.js' %}"></script>
+  <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'main/js/showdown.min.js' %}"></script>
   <script src="{% static 'main/js/main.js'%}"></script>
   {% block js %} {% endblock %}
   </body>

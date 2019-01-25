@@ -16,6 +16,15 @@ class ItemForm(ModelForm):
     class Meta:
         model = Item
         fields = ['fl', 'name', 'typ', 'desc']
+        help_texts = {
+            'fl': 'The file must be of one of these types: pdf, odt, odp, doc, docx, ppt, pptx, jpg, png, txt',
+            'name': '''
+                The name describes what exactly the file contains. For example, 'Quiz 1', 'Slides on Decidability', 'Pankaj's notes on Power Series' etc.
+                ''',
+            'desc': '''
+                The description contains any other information about the file that cannot be conveyed in the name. For example, 'Correction in Q2: inequality should be strict.', 'These notes are from the extra class held on Diwali'
+            '''
+        }
 
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)

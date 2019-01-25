@@ -103,6 +103,7 @@ $(document).ready(function(){
 
 function formLoaded() {
     setProgress(0);
+    $('[data-toggle="popover"]').popover();
     $("#item-form").submit(function(e) {
         e.preventDefault();
         var form = $(this);

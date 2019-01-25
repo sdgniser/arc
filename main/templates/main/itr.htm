@@ -61,13 +61,19 @@
               {% endif %}
             </div>
           </div>
+          <div class="row">
+            <div class="col">
+              <div class="markdown">{{ c.text }}</div>
+            </div>
+          </div>
         </div>
         <!--<hr class="comment-hr">-->
-        <div class="markdown">{{ c.text }}</div>
       </div>
     {% endfor %}
   {% else %}
+  <div class="comm alert alert-secondary" role="alert">
     No comments yet
+  </div>
   {% endif %}
 
   {% if user.is_authenticated %}
@@ -95,11 +101,19 @@
           {{field|add_class:'form-control'}}
         </div>
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Post</button>
-      <br>
-      <br>
-      <span>Preview</span>
       <div id="preview" class="alert alert-secondary" role="alert"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary">Post</button>
+          </div>
+          <div class="col">
+            <span class="float-right" id="comment-help">
+              <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Formatting Help</a>
+            </span>
+          </div>
+        </div>
+      </div>
     </form>
 
   {% endif %}

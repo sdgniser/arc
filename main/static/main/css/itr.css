@@ -11,5 +11,9 @@
   text-align: right;
 }
 
+#comment-help {
+  font-size: 0.7em;
+}
+
 #item-progress-bar {
 }
