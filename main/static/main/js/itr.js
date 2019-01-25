@@ -80,6 +80,7 @@ $(document).ready(function() {
 
 $(document).ready(function(){
     $('#item-modal-btn').click(function(e) {
+        setProgress(0);
         $.ajax({
             type: "GET",
             url: "add/",
@@ -89,44 +90,52 @@ $(document).ready(function(){
             error: function(response, ts, et) {
                 console.log("error");
                 console.log(response);
+                formLoaded();
             },
             success: function (response) {
                 $('#item-modal-body-inner').html(response);
                 $('#item-modal-inner').modal();
-
-                $("#item-form").submit(function(e) {
-                    e.preventDefault();
-                    var form = $(this);
-                    var formData = new FormData(this);
-                    var url = form.attr('action');
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function() {
-                        },
-                        xhr: function () {
-                            var nxhr = $.ajaxSettings.xhr();
-                            if (nxhr.upload) {
-                                nxhr.upload.addEventListener('progress', uploadProgress, false);
-                            }
-                            return nxhr;
-                        },
-                        error: function(response, ts, et) {
-                            $('#item-modal-body-inner').html(response);
-                        },
-                        success: function(response) {
-                            $('#item-modal-body-inner').html(response);
-                        }
-                    });
-                });
+                formLoaded();
             },
         });
     });
 });
+
+function formLoaded() {
+    setProgress(0);
+    $("#item-form").submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = new FormData(this);
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+            },
+            xhr: function () {
+                var nxhr = $.ajaxSettings.xhr();
+                if (nxhr.upload) {
+                    nxhr.upload.addEventListener('progress', uploadProgress, false);
+                }
+                return nxhr;
+            },
+            error: function(response, ts, et) {
+                setProgress(0);
+                $('#item-modal-body-inner').html(response);
+            },
+            success: function(response) {
+                $('#item-modal-body-inner').html(response);
+            }
+        });
+        $('#item-form :input').prop('disabled', true);
+    });
+}
+
 
 function uploadProgress(e) {
     var percent = 0;
@@ -135,7 +144,12 @@ function uploadProgress(e) {
     if (e.lengthComputable) {
         percent = Math.ceil(position / total * 100);
     }
-    $("#item-progress-bar").css("width", percent+"%");
-    $("#item-progress-bar").attr("aria-valuenow", percent);
-    $("#item-progress-bar").text(percent+"%");
+    //console.log(percent);
+    setProgress(percent);
+}
+
+function setProgress(n) {
+    $("#item-progress-bar").css("width", n+"%");
+    $("#item-progress-bar").attr("aria-valuenow", n);
+    $("#item-progress-bar").text(n+"%");
 }

@@ -48,3 +48,7 @@ class CommentReportForm(ModelForm):
     class Meta:
         model = CommentReport
         fields = ['typ', 'desc']
+
+    def __init__(self, *args, **kwargs):
+        super(CommentReportForm, self).__init__(*args, **kwargs)
+        self.fields['desc'].widget.attrs.update({'rows': '2'})
