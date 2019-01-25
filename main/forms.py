@@ -19,10 +19,10 @@ class ItemForm(ModelForm):
         help_texts = {
             'fl': 'The file must be of one of these types: pdf, odt, odp, doc, docx, ppt, pptx, jpg, png, txt',
             'name': '''
-                The name describes what exactly the file contains. For example, 'Quiz 1', 'Slides on Decidability', 'Pankaj's notes on Power Series' etc.
+                The name describes what exactly the file contains. For example, 'Quiz 1' or 'Slides on Decidability' or 'Pankaj's notes on Power Series' etc.
                 ''',
             'desc': '''
-                The description contains any other information about the file that cannot be conveyed in the name. For example, 'Correction in Q2: inequality should be strict.', 'These notes are from the extra class held on Diwali'
+                The description contains any other information about the file that cannot be conveyed in the name. For example, 'Correction in Q2: inequality should be strict.' or 'These notes are from the extra class held on Diwali'
             '''
         }
 

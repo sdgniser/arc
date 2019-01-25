@@ -128,9 +128,11 @@ function formLoaded() {
             error: function(response, ts, et) {
                 setProgress(0);
                 $('#item-modal-body-inner').html(response);
+                formLoaded();
             },
             success: function(response) {
                 $('#item-modal-body-inner').html(response);
+                formLoaded();
             }
         });
         $('#item-form :input').prop('disabled', true);

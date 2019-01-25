@@ -29,14 +29,18 @@
   {% csrf_token %}
   {% for field in form %}
     <div class="form-group">
-      <label for="{{ field.id_for_label }}">
-        {{ field.label }}
-      </label>
-      <span class="float-right">
-        <button type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="left" data-content="{{ field.help_text }}">
-          <span class="oi oi-info"></span>
-        </button>
-      </span>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <label for="{{ field.id_for_label }}">
+              {{ field.label }}
+            </label>
+          </div>
+          <div class="col">
+            <a tabindex="0" role="button" type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="{{ field.help_text }}"><span class="oi oi-info"></span></a>
+          </div>
+        </div>
+      </div>
       {{ field }}
     </div>
   {% endfor %}
