@@ -15,7 +15,7 @@ class ProfileForm(ModelForm):
 class ItemForm(ModelForm):
     class Meta:
         model = Item
-        fields = ['fl', 'name', 'typ', 'desc']
+        fields = ['fl', 'name', 'desc']
         help_texts = {
             'fl': 'The file must be of one of these types: pdf, odt, odp, doc, docx, ppt, pptx, jpg, png, txt',
             'name': '''

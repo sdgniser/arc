@@ -43,6 +43,7 @@ class Course(models.Model):
 class Itr(models.Model):
     def __str__(self):
         return str(self.course) + ', ' + self.sem_name + ' ' + self.year
+    
     @property
     def short_name(self):
         return self.course.code.upper() + ' ' + self.sem_name + ' ' + self.year
@@ -73,7 +74,7 @@ class Item(models.Model):
     itr = models.ForeignKey(Itr, on_delete=models.CASCADE)
     fl = models.FileField('File', upload_to=gen_file_name)
     name = models.CharField('Name', max_length=64)
-    typ = models.CharField('Type', max_length=3, choices = ITEM_TYPES, default='a')
+    #typ = models.CharField('Type', max_length=3, choices = ITEM_TYPES, default='a')
     desc = models.TextField('Description', max_length=1000, blank=True)
     appr = models.BooleanField(default=False)
 
