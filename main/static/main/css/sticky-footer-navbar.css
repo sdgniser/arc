@@ -23,6 +23,17 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
+.float-right a /* Making the FAQ Link more visible */
+{
+  padding: 0.2rem;
+  background-color:  #ca952a54;
+  border-radius: 5px;
+  
+  color:#217ccc;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
