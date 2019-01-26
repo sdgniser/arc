@@ -43,7 +43,7 @@ class Course(models.Model):
 class Itr(models.Model):
     def __str__(self):
         return str(self.course) + ', ' + self.sem_name + ' ' + self.year
-    
+
     @property
     def short_name(self):
         return self.course.code.upper() + ' ' + self.sem_name + ' ' + self.year
@@ -69,7 +69,7 @@ def gen_file_name(instance, filename):
 
 class Item(models.Model):
     def __str__(self):
-        return self.typ
+        return self.name
     op = models.ForeignKey(User, on_delete=models.CASCADE)
     itr = models.ForeignKey(Itr, on_delete=models.CASCADE)
     fl = models.FileField('File', upload_to=gen_file_name)

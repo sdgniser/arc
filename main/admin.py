@@ -13,4 +13,11 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = [ProfileInline]
 
-admin.site.register([Course, School, Itr, Item, CommentReport])
+admin.site.register(Course)
+admin.site.register(School)
+admin.site.register(Itr)
+admin.site.register(Item)
+admin.site.register(CommentReport)
+admin.site.register(UserReport)
+admin.site.register(ItemReport)
+
