@@ -56,7 +56,7 @@ class Itr(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     sem = models.CharField('Semester', max_length=2, choices = SEMS, default='FA')
     year = models.CharField('Year', max_length=4)
-    inst = models.CharField('Instructor', max_length=32)
+    inst = models.CharField('Instructor', max_length=512)
     appr = models.BooleanField(default=False)
 
 from . import gen
