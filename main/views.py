@@ -288,3 +288,6 @@ def report_user(request, uid):
                     return Http404('User Not Found')
             return HttpResponse('User is none')
     return HttpResponse('You shouldn\'t be here.')
+
+def faq(request):
+    return render(request, 'main/faq.htm')

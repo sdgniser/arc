@@ -4,8 +4,7 @@
 <div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Course added.</h4>
   <p>The course {{ crs }} has been added.</p>
-  <hr>
-  <p class="mb-0">But, it will be reviewed by a moderator before its added to the main list.</p>
+  <p class="mb-0">But, it will be reviewed by a moderator before it appears in the main list, however you can still add content to it <a href="{% url 'course' crs.code %}">here.</a></p>
 </div>
 {% else %}
 <form id="course-form" method="post" action="{% url 'school' sch.abbr %}add/">

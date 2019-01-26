@@ -34,4 +34,6 @@ urlpatterns = [
     path('report/c/<cid>/', views.report_comment, name='report_comment'),
     path('report/i/<iid>/', views.report_item, name='report_item'),
     path('report/u/<uid>/', views.report_user, name='report_user'),
+    
+    path('faq/', views.faq, name='faq'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
