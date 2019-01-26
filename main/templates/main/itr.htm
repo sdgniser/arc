@@ -13,7 +13,7 @@
     {% for i in item_list %}
     <li class="list-group-item">
       <a href="{{ i.fl.url }}">{{ i.name }}</a>
-      {% if user.is_authenticated %}
+      {% if user.is_authenticated and user != i.op %}
         <button id="f_{{ i.id }}" type="button" class="btn btn-secondary btn-sm btn-item-report float-right" data-toggle="modal" data-target="#item-report-modal-inner"><span class="oi oi-warning"></span></button>
       {% endif %}
     </li>
