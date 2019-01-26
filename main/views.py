@@ -51,6 +51,7 @@ def itr_view(request, cd, yr, sea):
         comments = Comment.objects.filter(itr=i, vis=True)
         form = None
         form2 = CommentReportForm()
+        form3 = ItemReportForm()
         if request.user is not None:
             form = CommentForm()
         return render(request, 'main/itr.htm', {
@@ -58,7 +59,8 @@ def itr_view(request, cd, yr, sea):
             'item_list': items,
             'comm_list': comments,
             'form': form,
-            'report_form': form2
+            'report_form': form2,
+            'item_report_form': form3
             })
     except Itr.DoesNotExist:
         return Http404('No such iteration was found')
@@ -76,9 +78,12 @@ def user_view(request, uid):
                 return render(request, 'main/user.htm', {'user_page': u, 'form': form})
             else:
                 return HttpResponse('You shouldn\'t be here')
-        if u == u2 and request.user.is_authenticated:
-            form = ProfileForm()
-            return render(request, 'main/user.htm', {'user_page': u, 'form': form})
+        if request.user.is_authenticated:
+            if u == u2:
+                form = ProfileForm()
+                return render(request, 'main/user.htm', {'user_page': u, 'form': form})
+            form = UserReportForm()
+            return render(request, 'main/user.htm', {'user_page': u, 'report_form': form})
         return render(request, 'main/user.htm', {'user_page': u})
     except User.DoesNotExist:
         return Http404('User not found')
@@ -251,7 +256,35 @@ def report_comment(request, cid):
     return HttpResponse('You shouldn\'t be here.')
 
 def report_item(request, iid):
-    pass
+    if request.method == 'POST':
+        rep_form = ItemReportForm(request.POST)
+        if rep_form.is_valid():
+            if request.user is not None:
+                try:
+                    i = Item.objects.get(id=iid)
+                    rep = rep_form.save(commit=False)
+                    rep.user = request.user
+                    rep.item = i
+                    rep.save()
+                    return HttpResponse('<div class="alert alert-success"> Report submitted successfully. Thanks. </div>')
+                except Item.DoesNotExist:
+                    return Http404('File Not Found')
+            return HttpResponse('User is none')
+    return HttpResponse('You shouldn\'t be here.')
 
 def report_user(request, uid):
-    pass
+    if request.method == 'POST':
+        rep_form = UserReportForm(request.POST)
+        if rep_form.is_valid():
+            if request.user is not None:
+                try:
+                    u = User.objects.get(id=uid)
+                    rep = rep_form.save(commit=False)
+                    rep.user = request.user
+                    rep.target = u
+                    rep.save()
+                    return HttpResponse('<div class="alert alert-success"> Report submitted successfully. Thanks. </div>')
+                except User.DoesNotExist:
+                    return Http404('User Not Found')
+            return HttpResponse('User is none')
+    return HttpResponse('You shouldn\'t be here.')

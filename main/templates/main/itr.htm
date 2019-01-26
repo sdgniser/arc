@@ -11,7 +11,12 @@
   {% if item_list %}
     <ul class="list-group">
     {% for i in item_list %}
-    <li class="list-group-item"><a href="{{ i.fl.url }}">{{ i.name }}</a></li>
+    <li class="list-group-item">
+      <a href="{{ i.fl.url }}">{{ i.name }}</a>
+      {% if user.is_authenticated %}
+        <button id="f_{{ i.id }}" type="button" class="btn btn-secondary btn-sm btn-item-report float-right" data-toggle="modal" data-target="#item-report-modal-inner"><span class="oi oi-warning"></span></button>
+      {% endif %}
+    </li>
     {% endfor %}
     </ul>
   {% else %}
@@ -63,7 +68,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class="markdown">{{ c.text }}</div>
+              <div>{{ c.text|safe }}</div>
             </div>
           </div>
         </div>
@@ -93,7 +98,7 @@
       {% endfor %}
     {% endif %}
 
-    <form method="post" action="{% url 'comment' itr.course.code itr.year itr.sem_name.lower %}">
+    <form id="comment-form" method="post" action="{% url 'comment' itr.course.code itr.year itr.sem_name.lower %}">
       {% csrf_token %}
       {% for field in form %}
         <div class="form-group">
@@ -109,7 +114,7 @@
           </div>
           <div class="col">
             <span class="float-right" id="comment-help">
-              <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Formatting Help</a>
+              <a href="#" data-toggle="modal" data-target="#md-modal-inner">Formatting Help</a>
             </span>
           </div>
         </div>
@@ -192,7 +197,42 @@
     </div>
   </div>
   <!-- end report modal -->
+  <!-- item-report modal -->
+  <div id="item-report-modal">
+    <div class="modal fade" id="item-report-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
 
+          <div class="modal-header">
+            <h5 class="modal-title" id="item-report-modal-header"> <span class="oi oi-warning"></span> Report </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+
+          <div class="modal-body" id="item-report-modal-body">
+            <div id="item-report-modal-body-inner" class="container">
+
+              <form id="item-report-form" method="post" action="">
+              {% csrf_token %}
+              {% for field in item_report_form %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{field|add_class:'form-control'}}
+                </div>
+              {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+
+            </div>
+          </div>
+
+          <div class="modal-footer" id="item-report-modal-footer">
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end item report modal -->
   <!-- delete modal -->
   <div id="delete-modal">
     <div class="modal fade" id="delete-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
@@ -213,6 +253,95 @@
           <div class="modal-footer" id="delete-modal-footer">
             <button id="del-yes" class="btn btn-danger"> Yes </button>
             <button id="del-no" class="btn btn-primary"> No </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end delete modal -->
+  <!-- delete modal -->
+  <div id="md-modal">
+    <div class="modal fade" id="md-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title"> <span class="oi oi-info"></span> Formatting Help </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+
+          <div class="modal-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Type this
+                  </th>
+                  <th scope="col">
+                    To get this
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="col">
+                    _italics_
+                  </td>
+                  <td scope="col">
+                    <em>italics</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    __bold__
+                  </td>
+                  <td scope="col">
+                    <strong>bold</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    [niser.ac.in](http://www.niser.ac.in)
+                  </td>
+                  <td scope="col">
+                    <a href="http://www.niser.ac.in">niser.ac.in</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    * item 1 <br>
+                    * item 2
+                  </td>
+                  <td scope="col">
+                    <ul>
+                      <li>item 1</li>
+                      <li>item 2</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    &gt; quote
+                  </td>
+                  <td scope="col">
+                    <blockquote>quote</blockquote>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    ~~strikethrough~~
+                  </td>
+                  <td scope="col">
+                    <del>strikethrough</del>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-primary"> Got it. </button>
           </div>
 
         </div>

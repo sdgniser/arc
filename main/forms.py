@@ -61,3 +61,21 @@ class CommentReportForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentReportForm, self).__init__(*args, **kwargs)
         self.fields['desc'].widget.attrs.update({'rows': '2'})
+
+class UserReportForm(ModelForm):
+    class Meta:
+        model = UserReport
+        fields = ['typ', 'desc']
+
+    def __init__(self, *args, **kwargs):
+        super(UserReportForm, self).__init__(*args, **kwargs)
+        self.fields['desc'].widget.attrs.update({'rows': '2'})
+
+class ItemReportForm(ModelForm):
+    class Meta:
+        model = ItemReport
+        fields = ['typ', 'desc']
+
+    def __init__(self, *args, **kwargs):
+        super(ItemReportForm, self).__init__(*args, **kwargs)
+        self.fields['desc'].widget.attrs.update({'rows': '2'})

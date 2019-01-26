@@ -1,22 +1,33 @@
 function escapeHtml(t) {
     return t
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-            //.replace(/"/g, "&quot;")
-            //.replace(/'/g, "&#039;");
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            //.replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
 }
+
+$(document).ready(function() {
+    var converter = new showdown.Converter({strikethrough: true});
+    $('#preview').html(converter.makeHtml(escapeHtml($('#id_text').val())));
+    $('#id_text').on('change keyup paste load', function() {
+        $('#preview').html(converter.makeHtml(escapeHtml($('#id_text').val())));
+    });
+    $('#comment-form').submit(function() {
+        $('#id_text').val($('#preview').html());
+    });
+});
 
 $('.btn-report').click(function() {
     var id = $(this).attr('id').split('_')[1];
-    $("#comment-report-form").submit(function(e) {
+    $('#comment-report-form').submit(function(e) {
         e.preventDefault();
         var form = $(this);
         var formData = new FormData(this);
 
         $.ajax({
-            type: "POST",
-            url: "/report/c/"+id+"/",
+            type: 'POST',
+            url: '/report/c/'+id+'/',
             data: formData,
             processData: false,
             contentType: false,
@@ -25,56 +36,78 @@ $('.btn-report').click(function() {
             error: function(response, ts, et) {
                 console.log(ts);
                 console.log(et);
-                $("#report-modal-inner").modal('hide');
-                showModal("Error while reporting", response, "");
+                $('#report-modal-inner').modal('hide');
+                showModal('Error while reporting', response, '');
             },
             success: function(response) {
-                console.log("error2");
-                $("#report-modal-inner").modal('hide');
-                showModal("Comment successfully reported", response, "");
+                console.log('error2');
+                $('#report-modal-inner').modal('hide');
+                showModal('Comment successfully reported', response, '');
             }
         });
     });
 });
 
-$("#del-no").click(function() {
-    $("#delete-modal-inner").modal("hide");
-});
-
-
-$('.btn-delete').click(function(e) {
-    $("#delete-modal-msg").html("Are you sure you want to delete this comment?");
-    $("#delete-modal-msg").attr("class", "alert alert-danger");
+$('.btn-item-report').click(function() {
     var id = $(this).attr('id').split('_')[1];
-    $('#del-yes').off('click');
-    $("#del-yes").click(function() {
-        $("#delete-modal-inner").modal("hide");
-    });
-    $('#del-yes').click(function(e) {
-        console.log('foo');
+    $('#item-report-form').submit(function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = new FormData(this);
+
         $.ajax({
-            type: "GET",
-            url: "/comm_del/" + id + "/",
+            type: 'POST',
+            url: '/report/i/'+id+'/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+            },
             error: function(response, ts, et) {
-                console.log("error: ajax request to delete comment failed");
-                console.log(response);
-                $('#delete-modal-body').html(response);
+                console.log(ts);
+                console.log(et);
+                $('#item-report-modal-inner').modal('hide');
+                showModal('Error while reporting', et, '');
             },
-            success: function (response) { 
-                $("#del-yes").off("click");
-                $("#del-no").html("ok");
-                $("#delete-modal-msg").attr("class", "alert alert-success");
-                $("#delete-modal-msg").html("Comment delete successfully");
-                $("#comm-"+id).hide();
-            },
+            success: function(response) {
+                $('#item-report-modal-inner').modal('hide');
+                showModal('Comment successfully reported', response, '');
+            }
         });
     });
 });
 
-$(document).ready(function() {
-    var converter = new showdown.Converter({strikethrough: true});
-    $("#id_text").on("change keyup paste load", function() {
-        $("#preview").html(converter.makeHtml(escapeHtml($("#id_text").val())));
+$('#del-no').click(function() {
+    $('#delete-modal-inner').modal('hide');
+});
+
+
+$('.btn-delete').click(function(e) {
+    $('#delete-modal-msg').html('Are you sure you want to delete this comment?');
+    $('#delete-modal-msg').attr('class', 'alert alert-danger');
+    var id = $(this).attr('id').split('_')[1];
+    $('#del-yes').off('click');
+    $('#del-yes').click(function() {
+        $('#delete-modal-inner').modal('hide');
+    });
+    $('#del-yes').click(function(e) {
+        console.log('foo');
+        $.ajax({
+            type: 'GET',
+            url: '/comm_del/' + id + '/',
+            error: function(response, ts, et) {
+                console.log('error: ajax request to delete comment failed');
+                console.log(response);
+                $('#delete-modal-body').html(response);
+            },
+            success: function (response) { 
+                $('#del-yes').off('click');
+                $('#del-no').html('ok');
+                $('#delete-modal-msg').attr('class', 'alert alert-success');
+                $('#delete-modal-msg').html('Comment delete successfully');
+                $('#comm-'+id).hide();
+            },
+        });
     });
 });
 
@@ -82,13 +115,13 @@ $(document).ready(function(){
     $('#item-modal-btn').click(function(e) {
         setProgress(0);
         $.ajax({
-            type: "GET",
-            url: "add/",
+            type: 'GET',
+            url: 'add/',
             beforeSend: function() {
-                $("#item-modal-body-inner").html();
+                $('#item-modal-body-inner').html();
             },
             error: function(response, ts, et) {
-                console.log("error");
+                console.log('error');
                 console.log(response);
                 formLoaded();
             },
@@ -104,14 +137,14 @@ $(document).ready(function(){
 function formLoaded() {
     setProgress(0);
     $('[data-toggle="popover"]').popover();
-    $("#item-form").submit(function(e) {
+    $('#item-form').submit(function(e) {
         e.preventDefault();
         var form = $(this);
         var formData = new FormData(this);
         var url = form.attr('action');
 
         $.ajax({
-            type: "POST",
+            type: 'POST',
             url: url,
             data: formData,
             processData: false,
@@ -152,7 +185,7 @@ function uploadProgress(e) {
 }
 
 function setProgress(n) {
-    $("#item-progress-bar").css("width", n+"%");
-    $("#item-progress-bar").attr("aria-valuenow", n);
-    $("#item-progress-bar").text(n+"%");
+    $('#item-progress-bar').css('width', n+'%');
+    $('#item-progress-bar').attr('aria-valuenow', n);
+    $('#item-progress-bar').text(n+'%');
 }

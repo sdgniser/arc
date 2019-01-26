@@ -1,15 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>NISER Archive</title>
+    <link rel="stylesheet" href="{% static 'main/css/file.css' %}">
   </head>
   <body>
     <header>
       <h3>{{ item.fl }}</h3>
-      Name: {{ item.name }}
-      Uploaded by: {{ item.op }}
-      Description: {{ item.desc }}
+      Name: {{ item.name }}<br>
+      Uploaded by: <a href="{% url 'user' item.op.id %}">{{ item.op.name }}</a><br>
+      Description: {{ item.desc }}<br>
       Related course: <a href="{% url 'itr' item.itr.course.code item.itr.year item.itr.sem_name.lower %}">{{ item.itr }}</a>
     </header>
     <main>
@@ -22,6 +24,5 @@
     <footer>
       <small>NISER Archive | Coding Club, NISER</small>
     </footer>
-    </body>
+  </body>
 </html>
-
