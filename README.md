@@ -3,7 +3,7 @@ NISER Archive
 
 #### How to run a local instance?
 
- * Sit tight. If migrations fail, delete everything (the repo, the database, etc.) and start over.
+ * Sit tight. ~~If migrations fail, delete everything (the repo, the database, etc.) and start over.~~ (I have learnt this the hard way: DO NOT TRACK MIGRATIONS FILES, and everything works fine.)
  * Install: `python`, `postgresql`
  * Clone the repo.
  * Create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) and using `pip` install `django`, `django-authtools`, `django-widget-tweaks`, `psycopg2`.
