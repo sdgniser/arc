@@ -101,11 +101,11 @@
     <form id="comment-form" method="post" action="{% url 'comment' itr.course.code itr.year itr.sem_name.lower %}">
       {% csrf_token %}
       <div class="form-group">
-        <div class="container">
+        <div class="container" id="help-container">
           <div class="row">
             <label for="{{ form.text.id_for_label }}">
               Add a new comment:
-            </label>
+            </label>&nbsp;&nbsp;&nbsp;
             <button href="#" type="button" role="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#md-modal-inner">
               <span class="oi oi-info"></span>&nbsp;Formatting Help
             </button>
