@@ -1,0 +1,8 @@
+{% extends 'main/base.htm' %}
+{% block title %}Server Error{% endblock %}
+{% block l3h %}Error 500 - Server Error{% endblock %}
+
+{% block content %}
+There was a server error.<br>
+<a href="{% url 'home' %}">Head back to home page</a>
+{% endblock %}

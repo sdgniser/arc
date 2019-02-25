@@ -16,18 +16,18 @@
   <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="/">NISER Archive</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <div class="collapse navbar-collapse" id="mainNavbar">
 
       <!-- <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form> -->
 
-      <ul class="nav navbar-nav flex-row ml-md-auto d-none d-md-flex">
+      <ul class="navbar-nav ml-auto">
       <!-- <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
       </li> -->
@@ -95,7 +95,7 @@
   <footer class="footer">
     <div class="container">
       <span class="text-muted">Coding Club | NISER, Bhubaneswar</span>
-      <span class="float-right"><a href="{% url 'faq' %}">FAQ</a></span>
+      <span class="float-right"><a id="faq-link" href="{% url 'faq' %}">FAQ</a></span>
     </div>
   </footer>
 

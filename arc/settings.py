@@ -133,3 +133,9 @@ LOGOUT_REDIRECT_URL = 'home'
 
 from .mail import *
 from .keys import SECRET_KEY
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}

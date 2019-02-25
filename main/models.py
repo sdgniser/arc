@@ -42,7 +42,7 @@ class Course(models.Model):
 
 class Itr(models.Model):
     def __str__(self):
-        return str(self.course) + ', ' + self.sem_name + ' ' + self.year
+        return self.course.code.upper() + ', ' + self.sem_name + ' ' + self.year
 
     @property
     def short_name(self):
@@ -129,7 +129,7 @@ class CommentReport(Report):
         ("oh", "Other"),
     ]
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    typ = models.CharField('Type', max_length=2, choices=TYPE_CHOICES)
+    typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)
 
 class ItemReport(Report):
     TYPE_CHOICES = [
@@ -140,7 +140,7 @@ class ItemReport(Report):
         ("oh", "Other"),
     ]
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    typ = models.CharField(max_length=2, choices=TYPE_CHOICES)
+    typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)
 
 class UserReport(Report):
     TYPE_CHOICES = [
@@ -149,4 +149,4 @@ class UserReport(Report):
         ("oh", "Other"),
     ]
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
-    typ = models.CharField(max_length=2, choices=TYPE_CHOICES)
+    typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)

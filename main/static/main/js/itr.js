@@ -165,7 +165,7 @@ function formLoaded() {
             },
             success: function(response) {
                 $('#item-modal-body-inner').html(response);
-                formLoaded();
+                setTimeout(function() { location.reload(); }, 2000);
             }
         });
         $('#item-form :input').prop('disabled', true);

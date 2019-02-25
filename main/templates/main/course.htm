@@ -9,7 +9,7 @@
   {% if itr_list %}
     <ul class="list-group">
       {% for i in itr_list %}
-        <li class="list-group-item"><a href="{% url 'itr' crs.code i.year i.sem_name.lower %}">{{ i }}</a></li>
+      <li class="list-group-item"><a href="{% url 'itr' crs.code i.year i.sem_name.lower %}">{{ i }} (Instructor: {{ i.inst }})</a></li>
       {% endfor %}
     </ul>
   {% else %}

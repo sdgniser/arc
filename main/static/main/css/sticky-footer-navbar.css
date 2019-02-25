@@ -6,7 +6,7 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 128px;
 }
 .footer {
   position: absolute;
@@ -23,10 +23,9 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-.float-right a /* Making the FAQ Link more visible */
+a#faq-link /* Making the FAQ Link more visible */
 {
   padding: 0.2rem;
-  background-color:  #ca952a54;
   border-radius: 5px;
   
   color:#217ccc;

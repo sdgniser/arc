@@ -291,3 +291,9 @@ def report_user(request, uid):
 
 def faq(request):
     return render(request, 'main/faq.htm')
+
+def error404(request, exception):
+    return render(request, 'main/404.htm', {'exp': exception}, status=404)
+
+def error500(request, exception):
+    return render(request, 'main/500.htm', {'exp': exception}, status=500)

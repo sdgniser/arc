@@ -1,0 +1,9 @@
+{% extends 'main/base.htm' %}
+{% block title %}Page Not Found{% endblock %}
+{% block l3h %}Error 404 - Page Not Found{% endblock %}
+
+{% block content %}
+The requested page does not exist.<br>
+<a href="{% url 'home' %}">Head back to home page</a>
+{% endblock %}
+

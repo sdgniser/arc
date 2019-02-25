@@ -100,22 +100,29 @@
 
     <form id="comment-form" method="post" action="{% url 'comment' itr.course.code itr.year itr.sem_name.lower %}">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="form-group">
-          <label for="{{ field.id_for_label }}">Add a new comment: </label>
-          {{field|add_class:'form-control'}}
+      <div class="form-group">
+        <div class="container">
+          <div class="row">
+            <label for="{{ form.text.id_for_label }}">
+              Add a new comment:
+            </label>
+            <button href="#" type="button" role="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#md-modal-inner">
+              <span class="oi oi-info"></span>&nbsp;Formatting Help
+            </button>
+          </div>
+          <div class="row">
+          </div>
         </div>
-      {% endfor %}
+        {{ form.text|add_class:'form-control' }}
+      </div>
+      
       <div id="preview" class="alert alert-secondary" role="alert"></div>
       <div class="container">
         <div class="row">
           <div class="col">
-            <button type="submit" class="btn btn-primary">Post</button>
+            <button type="submit" class="btn btn-info">Post</button>
           </div>
           <div class="col">
-            <span class="float-right" id="comment-help">
-              <a href="#" data-toggle="modal" data-target="#md-modal-inner">Formatting Help</a>
-            </span>
           </div>
         </div>
       </div>
