@@ -81,7 +81,7 @@ DATABASES = {
         'PORT': '',
         'NAME': 'db',
         'USER': 'admin',
-        'PASSWORD': 'foobar',
+        #'PASSWORD': 'foobar',
     }
 }
 
