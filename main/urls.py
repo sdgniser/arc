@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 from . import views
 
-pw_reset_view = auth_views.PasswordResetView.as_view(template_name='main/password-reset.htm', email_template_name='main/password-reset-email.htm', subject_template_name='mail/pw-reset-subj.txt')
+pw_reset_view = auth_views.PasswordResetView.as_view(template_name='main/password-reset.htm', email_template_name='main/password-reset-email.htm', subject_template_name='main/pw-reset-subj.txt')
 
 urlpatterns = [
     path('', views.index_view, name='home'),

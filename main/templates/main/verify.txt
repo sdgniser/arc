@@ -1,1 +1,7 @@
-Visit this URL to verify your email address: {{ dmn }}/u/verify/{{ user.pk }}/{{ vid }}
+Greetings!
+
+Visit this URL to verify your email address: http://{{ dmn }}/u/verify/{{ user.pk }}/{{ vid }}
+
+Thanks.
+
+~ NISER Coding Club
