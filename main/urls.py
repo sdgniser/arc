@@ -5,12 +5,14 @@ from django.conf.urls.static import static
 
 from . import views
 
+pw_reset_view = auth_views.PasswordResetView.as_view(template_name='main/password-reset.htm', email_template_name='main/password-reset-email.htm')
+
 urlpatterns = [
     path('', views.index_view, name='home'),
     #path('login/', views.login, name = 'login'),
     #path('logout/', views.login, name = 'logout'),
     path('login/', auth_views.LoginView.as_view(template_name='main/login.htm')),
-    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='main/password-reset.htm')),
+    path('password_reset/', pw_reset_view),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='main/password-reset-done.htm')),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='main/password-reset-confirm.htm')),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='main/password-reset-complete.htm')),
