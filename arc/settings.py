@@ -131,8 +131,7 @@ AUTH_USER_MODEL = 'authtools.User'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-from .mail import *
-from .keys import SECRET_KEY
+from .local_settings import *
 
 CACHES = {
     'default': {

@@ -9,9 +9,20 @@ function showModal(head, msg, foot) {
     modal.modal();
 }
 
+function escapeHTML(t) {
+    return t
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            //.replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+}
+
 $(document).ready(function() {
     var converter = new showdown.Converter({strikethrough: true});
     $(".markdown").each(function() {
-        $(this).html(converter.makeHtml($(this).html()));
+		var t = escapeHTML($(this).text());
+		console.log(t);
+        $(this).html(converter.makeHtml(t));
     });
 });

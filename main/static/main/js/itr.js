@@ -1,21 +1,13 @@
-function escapeHtml(t) {
-    return t
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            //.replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-}
-
 $(document).ready(function() {
+	renderMathInElement(document.body);
     var converter = new showdown.Converter({strikethrough: true});
-    $('#preview').html(converter.makeHtml(escapeHtml($('#id_text').val())));
     $('#id_text').on('change keyup paste load', function() {
-        $('#preview').html(converter.makeHtml(escapeHtml($('#id_text').val())));
+        $('#preview').html(converter.makeHtml(escapeHTML($('#id_text').val())));
+		renderMathInElement(document.querySelector('#preview'));
     });
-    $('#comment-form').submit(function() {
-        $('#id_text').val($('#preview').html());
-    });
+    //$('#comment-form').submit(function() {
+    //    $('#id_text').val($('#preview').html());
+    //});
 });
 
 $('.btn-report').click(function() {
