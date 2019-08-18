@@ -3,10 +3,10 @@
 {% load static %}
   <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/dist/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'main/css/starter-template.css' %}">
   <link rel="stylesheet" href="{% static 'main/css/sticky-footer-navbar.css' %}">
-  <link href="{% static 'main/open-iconic/font/css/open-iconic-bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'main/dist/open-iconic/font/css/open-iconic-bootstrap.min.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
   {% block css %} {% endblock %}
   <title>{% block title %} {% endblock %} | NISER Archive</title>
@@ -99,10 +99,10 @@
     </div>
   </footer>
 
-  <script src="{% static 'main/js/jquery.min.js' %}"></script>
-  <script src="{% static 'main/js/popper.min.js' %}"></script>
-  <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'main/js/showdown.min.js' %}"></script>
+  <script src="{% static 'main/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'main/dist/popper.min.js' %}"></script>
+  <script src="{% static 'main/dist/bootstrap.min.js' %}"></script>
+  <script src="{% static 'main/dist/showdown.min.js' %}"></script>
   <script src="{% static 'main/js/main.js'%}"></script>
   {% block js %} {% endblock %}
   </body>

@@ -5,7 +5,10 @@
 {% block title %}{{ itr.short_name }}{% endblock %}
 {% block l3h %}{{ itr }}{% endblock %}
 {% block l5h %}{{ itr.inst }}{% endblock %}
-{% block css %}<link rel="stylesheet" href="{% static 'main/css/itr.css' %}">{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'main/dist/katex.min.css' %}">
+<link rel="stylesheet" href="{% static 'main/css/itr.css' %}">
+{% endblock %}
 
 {% block content %}	
   {% if item_list %}
@@ -68,7 +71,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <div>{{ c.text|safe }}</div>
+              <div class="markdown"> {{ c.text }}</div>
             </div>
           </div>
         </div>
@@ -360,5 +363,7 @@
 {% endblock %}
 
 {% block js %}
+  <script defer src="{% static 'main/dist/katex.min.js' %}"></script>
+  <script defer src="{% static 'main/dist/contrib/auto-render.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'main/js/itr.js' %}"></script>
 {% endblock %}

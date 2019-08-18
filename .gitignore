@@ -8,8 +8,6 @@ local_settings.py
 .env
 db.sqlite3
 
-/arc/keys.py
-/arc/mail.py
 /static/
 /media/
 /main/log
