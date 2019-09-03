@@ -30,13 +30,13 @@ blockquote::after{
   content: '';
 }
 
-blockquote span{
-  display:block;
-  color:#333333;
-  font-style: normal;
-  font-weight: bold;
-  margin-top:1em;
-}
+/*blockquote span.author{
+*  display:block;
+*  color:#333333;
+*  font-style: normal;
+*  font-weight: bold;
+*  margin-top:1em;
+}*/
 /*pasta-end*/
 
 .btn-circle {
