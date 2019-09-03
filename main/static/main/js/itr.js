@@ -1,9 +1,17 @@
 $(document).ready(function() {
-	renderMathInElement(document.body);
+	var katexOptions = {
+		delimiters: [
+			{left: "$$", right: "$$", display: true},
+			{left: "$", right: "$", display: false},
+			{left: "\\(", right: "\\)", display: false},
+			{left: "\\[", right: "\\]", display: true}
+		]
+	};
+	renderMathInElement(document.body, katexOptions);
     var converter = new showdown.Converter({strikethrough: true});
     $('#id_text').on('change keyup paste load', function() {
         $('#preview').html(converter.makeHtml(escapeHTML($('#id_text').val())));
-		renderMathInElement(document.querySelector('#preview'));
+		renderMathInElement(document.querySelector('#preview'), katexOptions);
     });
     //$('#comment-form').submit(function() {
     //    $('#id_text').val($('#preview').html());
