@@ -21,7 +21,7 @@ $('.btn-report').click(function() {
             },
             success: function(response) {
                 $("#report-modal-inner").modal('hide');
-                showModal("Comment successfully reported", response, "");
+                showModal("User successfully reported", response, "");
             }
         });
     });

@@ -12,3 +12,5 @@ db.sqlite3
 /media/
 /main/log
 /main/migrations
+
+node_modules/

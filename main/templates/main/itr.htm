@@ -6,7 +6,7 @@
 {% block l3h %}{{ itr }}{% endblock %}
 {% block l5h %}{{ itr.inst }}{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'main/dist/katex.min.css' %}">
+<link rel="stylesheet" href="{% static 'main/node_modules/katex/dist/katex.min.css' %}">
 <link rel="stylesheet" href="{% static 'main/css/itr.css' %}">
 {% endblock %}
 
@@ -363,7 +363,7 @@
 {% endblock %}
 
 {% block js %}
-  <script defer src="{% static 'main/dist/katex.min.js' %}"></script>
-  <script defer src="{% static 'main/dist/contrib/auto-render.min.js' %}"></script>
+  <script defer src="{% static 'main/node_modules/katex/dist/katex.min.js' %}"></script>
+  <script defer src="{% static 'main/node_modules/katex/dist/contrib/auto-render.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'main/js/itr.js' %}"></script>
 {% endblock %}
