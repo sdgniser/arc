@@ -40,7 +40,7 @@ $('.btn-report').click(function() {
                 showModal('Error while reporting', response, '');
             },
             success: function(response) {
-                console.log('error2');
+                //console.log('error2');
                 $('#report-modal-inner').modal('hide');
                 showModal('Comment successfully reported', response, '');
             }
@@ -91,7 +91,7 @@ $('.btn-delete').click(function(e) {
         $('#delete-modal-inner').modal('hide');
     });
     $('#del-yes').click(function(e) {
-        console.log('foo');
+        //console.log('foo');
         $.ajax({
             type: 'GET',
             url: '/comm_del/' + id + '/',

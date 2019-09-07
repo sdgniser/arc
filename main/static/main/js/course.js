@@ -26,7 +26,7 @@ $(document).ready(function(){
                             console.log(response);
                         },
                         success: function(response) {
-                            console.log(response);
+                            //console.log(response);
                             $('#itr-modal-body').html(response);
                         }
                     });

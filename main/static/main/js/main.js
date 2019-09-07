@@ -22,7 +22,7 @@ $(document).ready(function() {
     var converter = new showdown.Converter({strikethrough: true});
     $(".markdown").each(function() {
 		var t = escapeHTML($(this).text());
-		console.log(t);
+		//console.log(t);
         $(this).html(converter.makeHtml(t));
     });
 });
