@@ -1,0 +1,32 @@
+{
+  "name": "arc",
+  "version": "1.0.0",
+  "description": "A simple web service to archive the courses taught at a university.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feynhat/arc.git"
+  },
+  "keywords": [
+    "archive",
+    "NISER",
+    "django"
+  ],
+  "author": "K. Sannidhya Shukla",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/feynhat/arc/issues"
+  },
+  "homepage": "https://github.com/feynhat/arc#readme",
+  "dependencies": {
+    "jquery": ">=3.3.1",
+    "popper.js": ">=1.15",
+    "bootstrap": ">=4.2.1",
+    "open-iconic": ">=1.1.1",
+    "katex": ">=0.11.0",
+    "showdown": ">=1.8.7"
+  }
+}
