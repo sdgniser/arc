@@ -18,12 +18,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False 
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.35']
 
 # Application definition
 
@@ -70,20 +64,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'arc.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'localhost',
-        'PORT': '',
-        'NAME': 'db',
-        'USER': 'sdg',
-        'PASSWORD': 'sdg@4321',
-    }
-}
 
 
 # Password validation
