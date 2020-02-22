@@ -14,3 +14,6 @@ db.sqlite3
 /main/migrations
 
 node_modules/
+package-lock.json
+
+tags
