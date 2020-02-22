@@ -1,5 +1,6 @@
 from django.db import models
 from authtools.models import User
+from django.core.mail import mail_admins
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -32,13 +33,23 @@ class School(models.Model):
     appr = models.BooleanField(default=False)
 
 class Course(models.Model):
-    def __str__(self):
-        return (self.code.upper() + ' - ' + self.name)
     op = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     code    = models.CharField('Code', max_length=6, unique=True)
     name    = models.CharField('Name', max_length=128)
     school  = models.ForeignKey(School, on_delete=models.CASCADE)
     appr = models.BooleanField(default=False)
+
+    def __str__(self):
+        return (self.code.upper() + ' - ' + self.name)
+
+    def save(self, *args, **kwargs):
+        if self.appr == False:
+            mail_admins(
+                subject = 'New Course Needs Approval.',
+                message = 'A new course "{}" was added by {} on the NISER Archive. It is pending approval.'.format(self, self.op))
+
+        super().save(*args, **kwargs)
+
 
 class Itr(models.Model):
     def __str__(self):
@@ -58,6 +69,15 @@ class Itr(models.Model):
     year = models.CharField('Year', max_length=4)
     inst = models.CharField('Instructor', max_length=512)
     appr = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.appr == False:
+            mail_admins(
+                subject = 'New Iteration Needs Approval.',
+                message = 'A new iteration {} {} was added for course {} by {}.  It is pending approval.'.format(self.sem, self.year, self.course, self.op))
+
+        super().save(*args, **kwargs)
+
 
 from . import gen
 def gen_file_name(instance, filename):
@@ -114,6 +134,14 @@ class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     desc = models.TextField("Description", max_length=1000, blank=True)
     time = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        mail_admins(
+            subject = 'New Report Object.',
+            message = 'Someone needs to check it out.')
+
+        super().save(*args, **kwargs)
+
 
 class CommentReport(Report):
 
