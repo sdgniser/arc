@@ -144,7 +144,7 @@ def signup(request):
             
             # Verification email
             subj = 'Verification of email address - NISER Archive'
-            dmn = get_current_site(request).domain
+            dmn = get_current_site(request).domain + '/arc'
             htm = render_to_string('main/verify.htm', {'user': user, 'vid': uvid, 'dmn': dmn})
             txt = render_to_string('main/verify.txt', {'user': user, 'vid': uvid, 'dmn': dmn})
             mfrom = 'NISER Archive'
