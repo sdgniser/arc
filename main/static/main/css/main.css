@@ -58,3 +58,16 @@ blockquote::after{
   font-size: 9px;
   line-height: 1.42857;
 }
+
+/* For DarkMode.js */
+.darkmode-toggle {
+    z-index: 10;
+}
+.darkmode--activated footer{
+    transition: all 0.2s ease-in;
+    background-color: #343A40;
+}
+.darkmode--activated main .list-group .list-group-item {
+    transition: all 0.2s ease-in;
+    background-color: rgb(23, 29, 34);
+}
