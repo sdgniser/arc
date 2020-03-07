@@ -144,12 +144,12 @@ db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # os.environ.get('ARC_DEBUG', '') != False
+DEBUG = False # os.environ.get('ARC_DEBUG', '') != False
 
 # Media and static files for deployment
 MEDIA_URL = 'arc/media/'
 STATIC_URL = 'arc/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'arc/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'arc/static')]
 
 SECRET_KEY = os.environ.get('ARC_SECRET_KEY', 'vf9xhmb#1oif0m%19&h7#llbgrlebx#ay!v2j0-&$3o%_o9@5y')
 EMAIL_HOST = 'smtp.gmail.com'
