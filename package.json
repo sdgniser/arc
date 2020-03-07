@@ -1,0 +1,28 @@
+{
+  "name": "arc",
+  "version": "1.0.0",
+  "description": "NISER Archive",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdgniser/arc.git"
+  },
+  "keywords": [],
+  "author": "NISER Coding Club",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/sdgniser/arc/issues"
+  },
+  "homepage": "https://github.com/sdgniser/arc#readme",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "katex": "^0.11.1",
+    "open-iconic": "^1.1.1",
+    "popper.js": "^1.16.1",
+    "showdown": "^1.9.1"
+  }
+}
