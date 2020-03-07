@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authtools',
     'widget_tweaks',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -42,8 +44,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'main.middleware.LogMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'arc.urls'
 
 TEMPLATES = [
@@ -109,8 +113,6 @@ AUTH_USER_MODEL = 'authtools.User'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-from .local_settings import *
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -118,3 +120,43 @@ CACHES = {
 }
 
 DEFAULT_FROM_EMAIL = 'NISER Archive'
+
+# From local_settings.py
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'niserarc.herokuapp.com']
+
+ADMINS = []
+
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('ARC_DB'),
+        'USER': os.environ.get('ARC_DB_USER'),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False # os.environ.get('ARC_DEBUG', '') != False
+
+# Media and static files for deployment
+MEDIA_URL = '/arc/media/'
+STATIC_URL = '/arc/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'arc/static')]
+
+SECRET_KEY = os.environ.get('ARC_SECRET_KEY', 'vf9xhmb#1oif0m%19&h7#llbgrlebx#ay!v2j0-&$3o%_o9@5y')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = os.environ.get('ARC_EMAIL_HOST_USER')
+SERVER_EMAIL = 'NISER Archive'
+#You shouldn't be reading this
+EMAIL_HOST_PASSWORD = os.environ.get('ARC_EMAIL_HOST_PASSWORD')
+#But honestly though, I don't care if this gets hacked. Its not my personal email.
+EMAIL_USE_SSL = True
+EMAIL_SUBJECT_PREFIX = ''
