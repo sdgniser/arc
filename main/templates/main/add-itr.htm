@@ -4,7 +4,15 @@
 <div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Iteration added.</h4>
   <p>The the iteration has been added.</p>
-  <p class="mb-0">But, it will be reviewed by a moderator before it appears in the main list, however you can still add content to it <a href="{% url 'itr' crs.code itr.year itr.sem_name.lower %}">here.</a></p>
+  <p class="mb-0">It will be reviewed by a moderator before it appears on the
+  main list. However you can still add content to it <a href="{% url 'itr'
+    crs.code itr.year itr.sem_name.lower %}">here.</a></p>
+</div>
+{% elif exists %}
+<div class="alert alert-warning" role="alert">
+  <h4 class="alert-heading">Iteration already exists.</h4>
+  <p>{{ itr }} already exists.</p>
+  <p class="mb-0">You can visit the page here <a href="{% url 'itr' crs.code itr.year itr.sem_name.lower %}">here.</a></p>
 </div>
 {% else %}
 
@@ -26,7 +34,7 @@
 
   {% endif %}
 
-  <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/">
+  <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/" onsubmit="return false;">
     {% csrf_token %}
     {% for field in form %}
       <div class="form-group">

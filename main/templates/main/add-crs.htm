@@ -4,17 +4,41 @@
 <div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Course added.</h4>
   <p>The course {{ crs }} has been added.</p>
-  <p class="mb-0">But, it will be reviewed by a moderator before it appears in the main list, however you can still add content to it <a href="{% url 'course' crs.code %}">here.</a></p>
+  <p class="mb-0">It will be reviewed by a moderator before it appears on the main list. However, you can still add content to it <a href="{% url 'course' crs.code %}">here.</a></p>
+  <p class="mb-0">Thank you for your contribution!</a></p>
+</div>
+{% elif exists %}
+<div class="alert alert-warning" role="alert">
+  <h4 class="alert-heading">Course already exists.</h4>
+  <p>The course {{ crs }} already exists.</p>
+  <p class="mb-0">You can visit the page here <a href="{% url 'course' crs.code %}">here.</a></p>
 </div>
 {% else %}
-<form id="course-form" method="post" action="{% url 'school' sch.abbr %}add/">
-  {% csrf_token %}
-  {% for field in form %}
-    <div class="form-group">
-      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-      {{field|add_class:'form-control'}}
-    </div>
-  {% endfor %}
-  <button class="btn btn-primary" type="submit">Submit</button>
-</form>
+
+  {% if form.errors %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+    {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form id="course-form" method="post" action="{% url 'school' sch.abbr %}add/">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{field|add_class:'form-control'}}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
 {% endif %}

@@ -205,8 +205,13 @@ def add_itr(request, cd):
                 itr =  form.save(commit=False)
                 itr.op = request.user
                 itr.course = c
-                itr.save()
-                return render(request, 'main/add-itr.htm', {'crs': c, 'itr': itr, 'success': True})
+                try:
+                    i = Itr.objects.get(course=c, sem=itr.sem, year=itr.year)
+                    return render(request, 'main/add-itr.htm',
+                            {'exists': True, 'crs': c, 'itr': itr})
+                except Itr.DoesNotExist:
+                    itr.save()
+                    return render(request, 'main/add-itr.htm', {'crs': c, 'itr': itr, 'success': True})
             else:
                 return HttpResponse('User is none')
     else:
@@ -219,12 +224,18 @@ def add_crs(request, abbrev):
         form = CourseForm(request.POST)
         if form.is_valid():
             if request.user is not None:
-                crs =  form.save(commit=False)
-                crs.code = crs.code.lower()
-                crs.op = request.user
-                crs.school = s
-                crs.save()
-                return render(request, 'main/add-crs.htm', {'crs': crs, 'success': True})
+                cd = form.cleaned_data['code'].lower()
+                try:
+                    crs = Course.objects.get(code=cd)
+                    return render(request, 'main/add-crs.htm',
+                            {'exists': True, 'crs': crs})
+                except Course.DoesNotExist:
+                    crs =  form.save(commit=False)
+                    crs.code = crs.code.lower()
+                    crs.op = request.user
+                    crs.school = s
+                    crs.save()
+                    return render(request, 'main/add-crs.htm', {'crs': crs, 'success': True})
             else:
                 return HttpResponse('User is none')
     else:

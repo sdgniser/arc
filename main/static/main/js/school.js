@@ -13,22 +13,27 @@ $(document).ready(function(){
             success: function (response) {
                 $('#course-modal-body').html(response);
                 $('#course-modal-inner').modal();
-
-                $("#course-form").submit(function(e) {
-                    e.preventDefault();
-                    var form = $(this);
-                    var url = form.attr('action');
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: form.serialize(),
-                        success: function(response) {
-                            $('#course-modal-body').html(response);
-                        }
-                    });
-                });
+				courseFormLoaded();
             },
         });
     });
 });
+
+function courseFormLoaded() {
+	console.log("course form loaded");
+	$("#course-form").submit(function(e) {
+		e.preventDefault();
+		$(':button[type="submit"]').prop('disabled', true);
+		var form = $(this);
+		var url = form.attr('action');
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: form.serialize(),
+			success: function(response) {
+				$('#course-modal-body').html(response);
+				courseFormLoaded();
+			}
+        });
+	});
+}
