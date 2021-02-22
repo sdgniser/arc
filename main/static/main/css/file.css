@@ -5,12 +5,20 @@ html, body {
   overflow:hidden
 }
 
-div {
-  font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-}
-
 header {
   margin: 16px;
+}
+
+header strong {
+  font-size: 16px;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
 }
 
 #menu {
@@ -62,7 +70,7 @@ header {
 }
 
 #article {
-  margin-left: 390px;
+  margin-left: 380px;
   height:100%;
 }
 

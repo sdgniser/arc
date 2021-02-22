@@ -12,7 +12,10 @@
       <header>
         <h2><a href="/arc">NISER Archive</a></h2>
         <strong>{{ item.name }}</strong><br>
-        <small>({{ item.fl }})</small><br>
+        <div id="download">
+          <span class="float-left"><small>({{ item.fl }})</small></span>
+          <span class="float-right"><a href="{{ item.fl.url }}">⇣ Download</a></span><br>
+        </div>
       </header>
       <hr>
       <div id="link">

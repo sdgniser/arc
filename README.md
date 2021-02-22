@@ -10,7 +10,7 @@ NISER Archive
  * You'll have to provide [`/arc/local_settings.py`](https://pastebin.com/S9yV4yj5).
  * ~~You'll also have to fix some of the absolute paths in `/arc/settings.py` because~~ I am lazy.
  * `cd` to `/main/static/main` and
- `npm install -g jquery popper.js bootstrap katex showdown open-iconic`.
+ `npm install jquery popper.js bootstrap katex showdown open-iconic`.
  * `cd` to the cloned repo (while you're still in virtual env) and run: `python manage.py collectstatic`, `python manage.py makemigrations main`, `python manage.py migrate`
  * Start the server: `python manage.py runserver` or you can run an apache
    server, thats how the deployed server is running presently. Configuring an
@@ -30,6 +30,7 @@ NISER Archive
 
  #### Useful Links:
 
-  * Apache - [Debian Wiki](https://wiki.debian.org/Apache), [Arch Wiki](https://wiki.debian.org/Apache), [Django on Apache](https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/modwsgi/)
+  * Apache - [Debian Wiki](https://wiki.debian.org/Apache), [Arch Wiki](https://wiki.archlinux.org/index.php/Apache_HTTP_Server), [Django on Apache](https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/modwsgi/)
+  * Postgres - [Debian Wiki](https://wiki.debian.org/PostgreSql), [Arch Wiki](https://wiki.archlinux.org/index.php/PostgreSQL)
   * Django - [Official Docs](https://docs.djangoproject.com/en/3.1/)
   * HTML - [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML)
