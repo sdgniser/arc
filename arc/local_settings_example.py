@@ -27,8 +27,6 @@ EMAIL_HOST = ''
 EMAIL_PORT = '465'
 EMAIL_HOST_USER = ''
 SERVER_EMAIL = 'NISER Archive'
-#You shouldn't be reading this
 EMAIL_HOST_PASSWORD = ''
-#But honestly though, I don't care if this gets hacked. Its not my personal email.
 EMAIL_USE_SSL = True
 EMAIL_SUBJECT_PREFIX = ''

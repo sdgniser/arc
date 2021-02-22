@@ -1,4 +1,87 @@
-iframe {
+html, body {
   height: 100%;
+  width:100%;
+  margin: 0;
+  overflow:hidden
+}
+
+div {
+  font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+}
+
+header {
+  margin: 16px;
+}
+
+#menu {
+  width: 370px;
+  height: 100%;
+  position: fixed;
+  z-index: 1; 
+  top: 0; 
+  left: 0;
+  background-color: white;
+  overflow-x: hidden
+}
+
+#description {
+  margin: 12px 0 0 16px;
+  font-size: 16px;
   width: 100%;
+  padding: 12px 24px 12px 0;
+}
+
+#op {
+  margin: 12px 0 0 16px;
+}
+
+#link {
+  margin: 12px 0 0 16px;
+  font-size: 16px;
+  color:#aaa;
+}
+
+#link a {
+  color: #aaa;
+  text-decoration: underline;
+}
+        
+#versions {
+  margin: 18px 0 0 25px;
+  font-size: 12px;
+  color:#aaa;
+}
+
+#versions a {
+  color: black;
+  text-decoration: none;
+}
+
+#versions a:hover {
+  text-decoration: underline;
+}
+
+#article {
+  margin-left: 390px;
+  height:100%;
+}
+
+iframe {
+  width:100%;
+  height:100%;
+}
+
+td {
+  vertical-align:top;
+}
+        
+#warning {
+  color: red;
+  font-family: serif;
+  text-align: center;
+  margin:8px 0 0 16px;
+}
+
+#warning a {
+  color:red;
 }

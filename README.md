@@ -12,7 +12,10 @@ NISER Archive
  * `cd` to `/main/static/main` and
  `npm install -g jquery popper.js bootstrap katex showdown open-iconic`.
  * `cd` to the cloned repo (while you're still in virtual env) and run: `python manage.py collectstatic`, `python manage.py makemigrations main`, `python manage.py migrate`
- * Start the server: `python manage.py runserver` OR you can run an apache server, thats how the current development server is running. Configuring an apache server is very machine-specific. Google how to do it on your machine.)
+ * Start the server: `python manage.py runserver` or you can run an apache
+   server, thats how the deployed server is running presently. Configuring an
+   apache server is very machine-specific. Google how to do it on your
+   machine.)
  * Please let me know if you're unable to run it on your machine.
 
  #### TODO:
@@ -23,4 +26,10 @@ NISER Archive
    `django-authtools` is the only thing that is not compatible, but there might
    be other dependencies which don't support Django 3 yet.
  * **Non-Upload Items**: Add support for items which are not necessarily file
- uploads (for example, links).
+   uploads (for example, links).
+
+ #### Useful Links:
+
+  * Apache - [Debian Wiki](https://wiki.debian.org/Apache), [Arch Wiki](https://wiki.debian.org/Apache), [Django on Apache](https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/modwsgi/)
+  * Django - [Official Docs](https://docs.djangoproject.com/en/3.1/)
+  * HTML - [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML)
