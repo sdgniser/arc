@@ -85,7 +85,7 @@ def user_view(request, uid):
             form = UserReportForm()
             return render(request, 'main/user.htm', {'user_page': u, 'report_form': form})
         return render(request, 'main/user.htm', {'user_page': u})
-    except User.DoesNotExist, ValueError:
+    except (User.DoesNotExist, ValueError):
         # ValueError will occur when someone tries /u/asdf (since asdf cannot be parsed as
         # an integer)
         raise Http404('User not found')
