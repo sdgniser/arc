@@ -63,7 +63,7 @@ def itr_view(request, cd, yr, sea):
             'item_report_form': form3
             })
     except Itr.DoesNotExist:
-        return Http404('No such iteration was found')
+        raise Http404('No such iteration was found')
 
 def user_view(request, uid):
     try:
@@ -86,7 +86,7 @@ def user_view(request, uid):
             return render(request, 'main/user.htm', {'user_page': u, 'report_form': form})
         return render(request, 'main/user.htm', {'user_page': u})
     except User.DoesNotExist:
-        return Http404('User not found')
+        raise Http404('User not found')
 
 def add_comment(request, cd, yr, sea):
     url = reverse('itr', args=[cd, yr, sea])
@@ -98,7 +98,7 @@ def add_comment(request, cd, yr, sea):
                 comm.user = request.user
                 s = REV_DICT_SEMS[sea.title()]
                 i = Itr.objects.get(course__code = cd, year=yr, sem=s)
-                comm.itr = i 
+                comm.itr = i
                 comm.save()
                 return redirect(url)
                 return render(request, 'main/itr.htm', {'crs': c, 'itr': itr, 'success': True})
@@ -141,7 +141,7 @@ def signup(request):
             user.profile.ip = ip
             user.profile.vid = uvid
             user.save()
-            
+
             # Verification email
             subj = 'Verification of email address - NISER Archive'
             dmn = get_current_site(request).domain + '/arc'
@@ -247,7 +247,7 @@ def file_view(request, fname):
         i = Item.objects.get(fl = fname)
         return render(request, 'main/file.htm', {'item': i})
     except Item.DoesNotExist:
-        return Http404("File not found")
+        raise Http404("File not found")
 
 def report_comment(request, cid):
     if request.method == 'POST':
@@ -262,7 +262,7 @@ def report_comment(request, cid):
                     rep.save()
                     return HttpResponse('<div class="alert alert-success"> Report submitted successfully. Thanks. </div>')
                 except Comment.DoesNotExist:
-                    return Http404('Comment Not Found')
+                    raise Http404('Comment Not Found')
             return HttpResponse('User is none')
     return HttpResponse('You shouldn\'t be here.')
 
@@ -279,7 +279,7 @@ def report_item(request, iid):
                     rep.save()
                     return HttpResponse('<div class="alert alert-success"> Report submitted successfully. Thanks. </div>')
                 except Item.DoesNotExist:
-                    return Http404('File Not Found')
+                    raise Http404('File Not Found')
             return HttpResponse('User is none')
     return HttpResponse('You shouldn\'t be here.')
 
@@ -296,7 +296,7 @@ def report_user(request, uid):
                     rep.save()
                     return HttpResponse('<div class="alert alert-success"> Report submitted successfully. Thanks. </div>')
                 except User.DoesNotExist:
-                    return Http404('User Not Found')
+                    raise Http404('User Not Found')
             return HttpResponse('User is none')
     return HttpResponse('You shouldn\'t be here.')
 

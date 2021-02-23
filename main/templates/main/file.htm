@@ -21,9 +21,11 @@
       <div id="link">
         <a href="{% url 'itr' item.itr.course.code item.itr.year item.itr.sem_name.lower %}">{{ item.itr }}</a>
       </div>
-      <div id="description">
-        <strong>Description:</strong> {{ item.desc }}
-      </div>
+      {% if item.desc %}
+        <div id="description">
+          <strong>Description:</strong> {{ item.desc }}
+        </div>
+      {% endif %}
       <div id="op">
         <strong>Uploaded by:</strong> <a href="{% url 'user' item.op.id %}">{{ item.op.name }}</a>
       </div>
