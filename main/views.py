@@ -327,8 +327,8 @@ def log_view(request):
     return render(request, 'main/log.htm', {'item_list': uploads,
         'comment_list': comments})
 
-def stat_view(request):
-    return render(request, 'main/stat.htm')
+#def stat_view(request):
+#    return render(request, 'main/stat.htm')
 
 def error404(request, exception):
     return render(request, 'main/404.htm', {'exp': exception}, status=404)
