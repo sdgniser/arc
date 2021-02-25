@@ -1,0 +1,51 @@
+{% extends 'main/base.htm' %}
+{% block title %}Activity Log{% endblock %}
+{% block l3h %}Activity Log{% endblock %}
+
+{% block content %}
+<div>
+  <br>
+  <section>
+    <h5>Recent Uploads</h5>
+    <div>
+      <ul class="list-group list-group-flush">
+      {% for i in item_list %}
+        <li class="list-group-item">
+          <span style="float-left">
+          <a href="{% url 'user' i.op.id %}">{{ i.op.name }}</a> uploaded <a href="{% url 'file' i.fl %}">{{ i.name }}</a>
+          to <a href="{% url 'itr' i.itr.course.code i.itr.year i.itr.sem_name.lower %}"> {{ i.itr }}</a>.
+          </span>
+          <span class="float-right">
+            {% if i.time %}
+            <small>
+              {{ i.when }}
+            </small>
+            {% endif %}
+          </span>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </section>
+  <br>
+  <section>
+    <h5>Recent Comments</h5>
+    <div>
+      <ul class="list-group list-group-flush">
+      {% for c in comment_list %}
+        <li class="list-group-item">
+          <span class="float-left;">
+            <a href="{% url 'user' c.user.id %}">{{ c.user.name }}</a> left
+            <a href="{% url 'itr' c.itr.course.code c.itr.year c.itr.sem_name.lower %}#comm-{{ c.id }}">a comment</a> at
+            <a href="{% url 'itr' c.itr.course.code c.itr.year c.itr.sem_name.lower %}"> {{ c.itr }}</a>.
+          </span>
+          <span class="float-right">
+            <small> {{ c.when }} </small>
+          </span>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </section>
+</div>
+{% endblock %}

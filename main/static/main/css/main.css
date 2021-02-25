@@ -58,3 +58,11 @@ blockquote::after{
   font-size: 9px;
   line-height: 1.42857;
 }
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}

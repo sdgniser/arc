@@ -42,4 +42,5 @@ urlpatterns = [
     path('report/u/<uid>/', views.report_user, name='report_user'),
     
     path('faq/', views.faq, name='faq'),
+    path('log/', views.log_view, name='log'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

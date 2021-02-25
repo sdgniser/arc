@@ -13,14 +13,6 @@ header strong {
   font-size: 16px;
 }
 
-.float-left {
-  float: left;
-}
-
-.float-right {
-  float: right;
-}
-
 #menu {
   width: 370px;
   height: 100%;

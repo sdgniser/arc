@@ -97,6 +97,7 @@ class Item(models.Model):
     #typ = models.CharField('Type', max_length=3, choices = ITEM_TYPES, default='a')
     desc = models.TextField('Description', max_length=1000, blank=True)
     appr = models.BooleanField(default=False)
+    time = models.DateTimeField(default=timezone.now, null=True)
 
 class SolItem(Item):
     def __str__(self):

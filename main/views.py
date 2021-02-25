@@ -7,6 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, authenticate
+from django.utils import timezone
 
 from urllib.parse import urlencode
 
@@ -16,6 +17,8 @@ from authtools.forms import UserCreationForm
 from .models import Profile, School, Course, Itr, Item, SEMS
 from .forms import *
 from .helper import *
+
+import datetime
 
 REV_DICT_SEMS = dict([i[::-1] for i in SEMS])
 
@@ -304,6 +307,28 @@ def report_user(request, uid):
 
 def faq(request):
     return render(request, 'main/faq.htm')
+
+def log_view(request):
+    uploads = Item.objects.all().order_by('-id')[:20]
+    for item in uploads:
+        if item.time != None:
+            t1 = item.time
+            t2 = timezone.now()
+            delta = t2 - t1
+            item.when = readableDuration(delta.total_seconds())
+        else:
+            item.when = ''
+    comments = Comment.objects.all().order_by('-id')[:20]
+    for comment in comments:
+        t1 = comment.posted
+        t2 = timezone.now()
+        delta = t2 - t1
+        comment.when = readableDuration(delta.total_seconds())
+    return render(request, 'main/log.htm', {'item_list': uploads,
+        'comment_list': comments})
+
+def stat_view(request):
+    return render(request, 'main/stat.htm')
 
 def error404(request, exception):
     return render(request, 'main/404.htm', {'exp': exception}, status=404)
