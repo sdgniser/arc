@@ -169,6 +169,7 @@ function formLoaded() {
             }
         });
         $('#item-form :input').prop('disabled', true);
+        $('#item-form :input').prop('value', 'Wait...');
     });
 }
 

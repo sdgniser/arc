@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, authenticate
 from django.utils import timezone
+from django.db import models
 
 from urllib.parse import urlencode
 
@@ -326,6 +327,13 @@ def log_view(request):
         comment.when = readableDuration(delta.total_seconds())
     return render(request, 'main/log.htm', {'item_list': uploads,
         'comment_list': comments})
+
+def stat_view(request):
+    upload_count = Item.objects.values('op').annotate(models.Count('id')).order_by('-id__count')[:10]
+    for i in range(len(upload_count)):
+        upload_count[i]['pos'] = i+1
+        upload_count[i]['op'] = User.objects.get(id=upload_count[i]['op'])
+    return render(request, 'main/stat.htm', {'item_list': upload_count})
 
 #def stat_view(request):
 #    return render(request, 'main/stat.htm')

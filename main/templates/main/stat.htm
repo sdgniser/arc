@@ -1,0 +1,32 @@
+{% extends 'main/base.htm' %}
+{% block title %}Statistics{% endblock %}
+{% block l3h %}Statistics{% endblock %}
+
+{% block content %}
+<div>
+  <br>
+  <section>
+    <h5>Top Contributors</h5>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User </th>
+            <th scope="col">Uploads</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for i in item_list %}
+        <tr>
+          <th scope="row"> {{ i.pos }} </th>
+          <td> {{ i.op.name }} </td>
+          <td> {{ i.id__count }} </td>
+        </tr>
+      {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

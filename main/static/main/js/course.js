@@ -20,6 +20,7 @@ function itrFormLoaded() {
 	$("#itr-form").submit(function(e) {
 		e.preventDefault();
 		$(':button[type="submit"]').prop('disabled', true);
+        $(':button[type="submit"]').html('Wait...');
 		var form = $(this);
 		var url = form.attr('action');
 
