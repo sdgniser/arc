@@ -9,7 +9,7 @@
     <h5>Recent Uploads</h5>
     <div>
       <ul class="list-group list-group-flush">
-      {% for i in item_list %}
+      {% for i in recent_uploads %}
         <li class="list-group-item">
           <span style="float-left">
           <a href="{% url 'user' i.op.id %}">{{ i.op.name }}</a> uploaded <a href="{% url 'file' i.fl %}">{{ i.name }}</a>
@@ -32,7 +32,7 @@
     <h5>Recent Comments</h5>
     <div>
       <ul class="list-group list-group-flush">
-      {% for c in comment_list %}
+      {% for c in recent_comments %}
         <li class="list-group-item">
           <span class="float-left;">
             <a href="{% url 'user' c.user.id %}">{{ c.user.name }}</a> left
@@ -45,6 +45,56 @@
         </li>
       {% endfor %}
       </ul>
+    </div>
+  </section>
+  <br>
+  {% if top_recent_uploaders %}
+  <section>
+    <h5>Top Contributors (This Month)</h5>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User </th>
+            <th scope="col">Uploads</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for i in top_recent_uploaders %}
+        <tr>
+          <th scope="row"> {{ i.pos }} </th>
+          <td> {{ i.op.name }} </td>
+          <td> {{ i.id__count }} </td>
+        </tr>
+      {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+  <br>
+  <section>
+    <h5>Top Contributors (All Time)</h5>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User </th>
+            <th scope="col">Uploads</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for i in top_uploaders %}
+        <tr>
+          <th scope="row"> {{ i.pos }} </th>
+          <td> {{ i.op.name }} </td>
+          <td> {{ i.id__count }} </td>
+        </tr>
+      {% endfor %}
+        </tbody>
+      </table>
     </div>
   </section>
 </div>

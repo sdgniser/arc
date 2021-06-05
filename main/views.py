@@ -310,33 +310,46 @@ def faq(request):
     return render(request, 'main/faq.htm')
 
 def log_view(request):
-    uploads = Item.objects.all().order_by('-id')[:20]
-    for item in uploads:
+
+    recent_uploads = Item.objects.all().order_by('-id')[:20]
+    t2 = timezone.now()
+    for item in recent_uploads:
         if item.time != None:
             t1 = item.time
-            t2 = timezone.now()
             delta = t2 - t1
             item.when = readableDuration(delta.total_seconds())
         else:
             item.when = ''
-    comments = Comment.objects.all().order_by('-id')[:20]
-    for comment in comments:
+
+    recent_comments = Comment.objects.all().order_by('-id')[:20]
+    for comment in recent_comments:
         t1 = comment.posted
         t2 = timezone.now()
         delta = t2 - t1
         comment.when = readableDuration(delta.total_seconds())
-    return render(request, 'main/log.htm', {'item_list': uploads,
-        'comment_list': comments})
 
-def stat_view(request):
-    upload_count = Item.objects.values('op').annotate(models.Count('id')).order_by('-id__count')[:10]
-    for i in range(len(upload_count)):
-        upload_count[i]['pos'] = i+1
-        upload_count[i]['op'] = User.objects.get(id=upload_count[i]['op'])
-    return render(request, 'main/stat.htm', {'item_list': upload_count})
+    top_uploaders = Item.objects.values('op').annotate(models.Count('id')).order_by('-id__count')[:10]
+    for i in range(len(top_uploaders)):
+        top_uploaders[i]['pos'] = i+1
+        top_uploaders[i]['op'] = User.objects.get(id=top_uploaders[i]['op'])
 
-#def stat_view(request):
-#    return render(request, 'main/stat.htm')
+    uploads_this_month = Item.objects.filter(time__month = t2.month)
+    top_recent_uploaders = uploads_this_month.values('op').annotate(models.Count('id')).order_by('-id__count')[:3]
+    for i in range(len(top_recent_uploaders)):
+        top_recent_uploaders[i]['pos'] = i+1
+        top_recent_uploaders[i]['op'] = User.objects.get(id=top_recent_uploaders[i]['op'])
+   
+    # set it to be None if the query set is empty, so that we can catch it in the template
+    # is there a better way to do this?
+    #if len(top_recent_uploaders) == 0:
+    #    top_recent_uploaders = None
+    
+    return render(request, 'main/log.htm', {
+        'recent_uploads': recent_uploads,
+        'recent_comments': recent_comments,
+        'top_uploaders': top_uploaders,
+        'top_recent_uploaders': top_recent_uploaders
+        })
 
 def error404(request, exception):
     return render(request, 'main/404.htm', {'exp': exception}, status=404)

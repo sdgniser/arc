@@ -43,5 +43,4 @@ urlpatterns = [
     
     path('faq/', views.faq, name='faq'),
     path('log/', views.log_view, name='log'),
-    path('stat/', views.stat_view, name='stat'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
