@@ -333,7 +333,7 @@ def log_view(request):
         top_uploaders[i]['pos'] = i+1
         top_uploaders[i]['op'] = User.objects.get(id=top_uploaders[i]['op'])
 
-    uploads_this_month = Item.objects.filter(time__month = t2.month)
+    uploads_this_month = Item.objects.filter(time__month = t2.month, time__year = t2.year)
     top_recent_uploaders = uploads_this_month.values('op').annotate(models.Count('id')).order_by('-id__count')[:3]
     for i in range(len(top_recent_uploaders)):
         top_recent_uploaders[i]['pos'] = i+1
