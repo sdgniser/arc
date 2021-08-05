@@ -39,10 +39,21 @@
   <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/" onsubmit="return false;">
     {% csrf_token %}
     {% for field in form %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{field|add_class:'form-control'}}
+    <div class="form-group">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <label for="{{ field.id_for_label }}">
+              {{ field.label }}
+            </label>
+          </div>
+          <div class="col">
+            {% if field.help_text %}<a tabindex="0" role="button" type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="{{ field.help_text }}"><span class="oi oi-info"></span></a> {% endif %}
+          </div>
+        </div>
       </div>
+      {{ field }}
+    </div>
     {% endfor %}
     <button class="btn btn-primary" type="submit">Submit</button>
   </form>

@@ -17,6 +17,7 @@ $(document).ready(function(){
 });
 
 function itrFormLoaded() {
+    $('[data-toggle="popover"]').popover();
 	$("#itr-form").submit(function(e) {
 		e.preventDefault();
 		$(':button[type="submit"]').prop('disabled', true);

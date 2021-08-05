@@ -19,7 +19,7 @@ class ItemForm(ModelForm):
         help_texts = {
             'fl': 'The file must be of one of these types: pdf, odt, odp, doc, docx, ppt, pptx, jpg, png, txt',
             'name': '''
-                The name describes what exactly the file contains. For example, 'Quiz 1' or 'Slides on Decidability' or 'Pankaj's notes on Power Series' etc.
+                The name describes what exactly the file contains. For example, 'Quiz 1' or 'Mid Term' or 'Slides on Decidability', etc.
                 ''',
             'desc': '''
                 The description contains any other information about the file that cannot be conveyed in the name. For example, 'Correction in Q2: inequality should be strict.' or 'These notes are from the extra class held on Diwali'
@@ -43,6 +43,23 @@ class ItrForm(ModelForm):
     class Meta:
         model = Itr
         fields = ['sem', 'year', 'inst']
+        help_texts = {
+            'sem': '''
+               'Fall': Jul. - Dec. (aka. Odd semester) 
+               ◦ 'Spring': Jan. - May. (aka. Even semester) 
+               ◦ 'Summer': May - Jul. (for repeat courses) 
+               ◦ 'Winter': Dec.
+            ''',
+            'inst': '''
+                Avoid using titles like 'Dr.' or 'Prof.'.
+                If there are more than one instructor, write their names separated by commas.
+            '''
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ItrForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs.update({'class': 'form-control'})
 
 class CommentForm(ModelForm):
     class Meta:
