@@ -15,17 +15,27 @@ from urllib.parse import urlencode
 from authtools.models import User
 from authtools.forms import UserCreationForm
 
-from .models import Profile, School, Course, Itr, Item, SEMS
+from .models import Profile, School, Course, Itr, Item, SEMS, Count
 from .forms import *
 from .helper import *
 
 import datetime
+import recom
+
 
 REV_DICT_SEMS = dict([i[::-1] for i in SEMS])
 
 def index_view(request):
     school_list = School.objects.order_by('abbr')
-    return render(request, 'main/index.htm', {'school_list': school_list})
+    cnt = Count.objects.get(pk = 0)
+    if request.user.is_authenticated:
+        auth = 1
+        rec = recom.get(request.user.id)
+        rec_list = Item.objects.filter(fl__in=rec)
+    else:
+        auth = 0
+        rec = []
+    return render(request, 'main/index.htm', {'school_list': school_list, 'auth' : auth, 'recom' : rec_list, 'count' : cnt})
 
 def school_view(request, abbrev):
     try:
@@ -250,7 +260,24 @@ def add_crs(request, abbrev):
 
 def file_view(request, fname):
     try:
+        cnt = Count.objects.get(pk = 0)
+        cnt.own+=1
+        cnt.save()
         i = Item.objects.get(fl = fname)
+        if request.user.is_authenticated:
+            recom.update(fname, request.user.id)
+        return render(request, 'main/file.htm', {'item': i})
+    except Item.DoesNotExist:
+        raise Http404("File not found")
+
+def file_view1(request, fname):
+    try:
+        cnt = Count.objects.get(pk = 0)
+        cnt.rec+=1
+        cnt.save()
+        i = Item.objects.get(fl = fname)
+        if request.user.is_authenticated:
+            recom.update(fname, request.user.id)
         return render(request, 'main/file.htm', {'item': i})
     except Item.DoesNotExist:
         raise Http404("File not found")

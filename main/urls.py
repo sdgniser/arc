@@ -36,6 +36,7 @@ urlpatterns = [
     path('comm_del/<cid>/', views.delete_comment, name='delete_comment'),
 
     path('f/<fname>/', views.file_view, name='file'),
+    path('f/<fname>/', views.file_view1, name='file1'),
 
     path('report/c/<cid>/', views.report_comment, name='report_comment'),
     path('report/i/<iid>/', views.report_item, name='report_item'),

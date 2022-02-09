@@ -179,3 +179,8 @@ class UserReport(Report):
     ]
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
     typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)
+
+
+class Count(models.Model):
+    rec = models.IntegerField(default=0)
+    own = models.IntegerField(default=0)
