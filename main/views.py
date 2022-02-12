@@ -20,21 +20,26 @@ from .forms import *
 from .helper import *
 
 import datetime
-import recom
-
+from .recom import *
+start()
 
 REV_DICT_SEMS = dict([i[::-1] for i in SEMS])
 
 def index_view(request):
     school_list = School.objects.order_by('abbr')
-    cnt = Count.objects.get(pk = 0)
+    try:
+        cnt = Count.objects.get(cnt_id = 1)
+    except Count.DoesNotExist:
+        cnt = Count(cnt_id = 1, rec = 0, own = 0)
+        cnt.save()
+
     if request.user.is_authenticated:
         auth = 1
-        rec = recom.get(request.user.id)
+        rec = get(request.user.id)  #Get Recommendations
         rec_list = Item.objects.filter(fl__in=rec)
     else:
         auth = 0
-        rec = []
+        rec_list = []
     return render(request, 'main/index.htm', {'school_list': school_list, 'auth' : auth, 'recom' : rec_list, 'count' : cnt})
 
 def school_view(request, abbrev):
@@ -260,24 +265,24 @@ def add_crs(request, abbrev):
 
 def file_view(request, fname):
     try:
-        cnt = Count.objects.get(pk = 0)
+        cnt = Count.objects.get(cnt_id = 1)
         cnt.own+=1
         cnt.save()
         i = Item.objects.get(fl = fname)
         if request.user.is_authenticated:
-            recom.update(fname, request.user.id)
+            update(fname, request.user.id)
         return render(request, 'main/file.htm', {'item': i})
     except Item.DoesNotExist:
         raise Http404("File not found")
 
 def file_view1(request, fname):
     try:
-        cnt = Count.objects.get(pk = 0)
+        cnt = Count.objects.get(cnt_id = 1)
         cnt.rec+=1
         cnt.save()
         i = Item.objects.get(fl = fname)
         if request.user.is_authenticated:
-            recom.update(fname, request.user.id)
+            update(fname, request.user.id)
         return render(request, 'main/file.htm', {'item': i})
     except Item.DoesNotExist:
         raise Http404("File not found")
