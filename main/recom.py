@@ -1,9 +1,17 @@
 import os
 import pandas as pd
+from lockfile import LockFile
+from time import sleep
 
-if os.path.exists('recom_data.csv') == False:
-    with open('recom_data.csv', 'w') as fp:
-        fp.write("Files")
+
+def start():
+    if os.path.exists('recom_data.csv') == False:
+        with open('recom_data.csv', 'w') as fp:
+            fp.write("Files")
+
+
+lock = LockFile('recom_data.csv')
+
 
 def get(user_id):
     user_id = str(user_id)
@@ -26,13 +34,26 @@ def get(user_id):
             return []
         
     else:
-        df[user_id] = [0]*len(df)
-        df.to_csv('recom_data.csv')
+        while lock.is_locked():
+            sleep(0.05)
+        
+        lock.acquire()
+        get_add(user_id)
+        lock.release()
+
         return []
-    
+
+
+def get_add(user_id):
+    df = pd.read_csv('recom_data.csv', index_col='Files')
+    df[user_id] = [0]*len(df)
+    df.to_csv('recom_data.csv')
+
+
 def change(value):
     value = round((value*0.8), 2)
     return value
+
 
 def update(file, user_id):
     user_id = str(user_id)
@@ -56,3 +77,14 @@ def update(file, user_id):
             df.loc[[file],[user_id]] = 10
     df.to_csv('recom_data.csv')
     return 'updated successfully'
+
+
+def update1(file, user_id):
+    while lock.is_locked():
+        sleep(0.05)
+        
+    lock.acquire()
+    val = update(file, user_id)
+    lock.release()
+    
+    return val
