@@ -182,5 +182,6 @@ class UserReport(Report):
 
 
 class Count(models.Model):
+    cnt_id = models.IntegerField(primary_key=True, default=1)
     rec = models.IntegerField(default=0)
     own = models.IntegerField(default=0)
