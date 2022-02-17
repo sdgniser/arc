@@ -5,7 +5,7 @@ from time import sleep
 
 
 def start():
-    if os.path.exists('recom_data.csv') == False:
+    if not os.path.exists('recom_data.csv'):
         with open('recom_data.csv', 'w') as fp:
             fp.write("Files")
 
