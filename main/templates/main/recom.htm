@@ -1,59 +1,3 @@
-<style>
-      
-      /* CSS for content boxes */
-      .card {
-        border-radius: 10px;
-        padding: 10px;
-        background-color:rgb(230, 230, 230);
-      }
-
-      .topic {
-        margin-top: -10px;
-        padding-left: 10px;
-      }
-
-      .text {
-        overflow: auto;
-        text-align: justify;
-        text-justify: inter-word;
-        background-color: rgb(255, 255, 255);
-        border-radius: 5px;
-        padding: 3px 7px;
-      }
-
-      .btn {
-        text-align: center;
-        border-radius: 5px;
-        background-color: rgb(0, 136, 199);
-        padding: 5px 7px;
-      }
-
-      .btn:hover {
-        background-color: rgb(66, 195, 255);
-      }
-
-      /* CSS for gallery section */
-      div.gallery {
-        background-color:rgb(236, 217, 228);
-        margin: 2px;
-        padding: 0px 15px;
-        border: 2px solid #ccc;
-        float: left;
-        text-align: center;
-        border-radius: 5px;
-        width: max-content;
-      }
-
-      div.gallery:hover {
-        border: 2px solid #777;
-      }
-
-      #hfix {
-        overflow-x: scroll;
-        overflow-y:hidden;
-      }
-
-</style>
 
 {% block recom %}
 <div style="width: 100%;margin-bottom: 15px;">
@@ -63,7 +7,7 @@
       <p hidden style="text-align: right;margin-top: -20px;">rec/self: {{ count.rec }}/{{ count.own }}</p>
     </div>
     
-    <div class="text", id="hfix">
+    <div class="text">
       <table align="center">
         <tr>
 
@@ -72,7 +16,7 @@
               {% for item in recom %}
                 <td>
                   
-                  <a href="{% url 'file1' item.fl %}">
+                  <a href="{% url 'file_recom' item.fl %}" title="{{ item.itr.course }}">
                     <div class="gallery" style="color:rgb(255, 0, 0);line-height: 0.8em;">
                       <h4>{{ item.name }}</h4>
                       <h3>{{ item.itr }}</h3>

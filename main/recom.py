@@ -1,19 +1,22 @@
 import os
 import pandas as pd
-from lockfile import LockFile
-from time import sleep
+import fasteners
 
 
+# Function to check if the file to store the data already exist or not
+# if not then create one.
 def start():
     if not os.path.exists('recom_data.csv'):
-        with open('recom_data.csv', 'w') as fp:
+        with open('recom_data.csv', 'a') as fp:
             fp.write("Files")
 
 
-lock = LockFile('recom_data.csv')
+lock = fasteners.InterProcessLock('recom_data.csv')
+start()
 
 
-def get(user_id):
+# Function to get the list of recommended files for a user
+def get_recom(user_id):
     user_id = str(user_id)
     df = pd.read_csv('recom_data.csv', index_col='Files')
     
@@ -30,24 +33,17 @@ def get(user_id):
 
             return final.index.tolist()   
         
-        else:
-            return []
+        return []
         
     else:
-        while lock.is_locked():
-            sleep(0.05)
-        
         lock.acquire()
-        get_add(user_id)
+        
+        df = pd.read_csv('recom_data.csv', index_col='Files')
+        df[user_id] = [0]*len(df)
+        df.to_csv('recom_data.csv')
+        
         lock.release()
-
         return []
-
-
-def get_add(user_id):
-    df = pd.read_csv('recom_data.csv', index_col='Files')
-    df[user_id] = [0]*len(df)
-    df.to_csv('recom_data.csv')
 
 
 def change(value):
@@ -55,7 +51,10 @@ def change(value):
     return value
 
 
+# Function to update the list of files accessed by user
 def update(file, user_id):
+    lock.acquire()
+    
     user_id = str(user_id)
     df = pd.read_csv('recom_data.csv', index_col='Files')
     
@@ -75,16 +74,8 @@ def update(file, user_id):
             df[user_id] = [0]*len(df)
             df.loc[file] = [0]*len(df.columns)
             df.loc[[file],[user_id]] = 10
+
     df.to_csv('recom_data.csv')
-    return 'updated successfully'
 
-
-def update1(file, user_id):
-    while lock.is_locked():
-        sleep(0.05)
-        
-    lock.acquire()
-    val = update(file, user_id)
     lock.release()
-    
-    return val
+    return 'updated successfully'

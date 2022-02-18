@@ -21,7 +21,6 @@ from .helper import *
 
 import datetime
 from .recom import *
-start()
 
 REV_DICT_SEMS = dict([i[::-1] for i in SEMS])
 
@@ -35,7 +34,7 @@ def index_view(request):
 
     if request.user.is_authenticated:
         auth = 1
-        rec = get(request.user.id)  #Get Recommendations
+        rec = get_recom(request.user.id)  #Get Recommendations
         rec_list = Item.objects.filter(fl__in=rec)
     else:
         auth = 0
@@ -263,7 +262,7 @@ def add_crs(request, abbrev):
         form = CourseForm()
     return render(request, 'main/add-crs.htm', {'sch': s, 'form': form})
 
-def file_view(request, fname):
+def file_view(request, fname):  # Normal file view (used when file is accessed through normal browsing)
     try:
         cnt = Count.objects.get(cnt_id = 1)
         cnt.own+=1
@@ -275,7 +274,7 @@ def file_view(request, fname):
     except Item.DoesNotExist:
         raise Http404("File not found")
 
-def file_view1(request, fname):
+def file_view_recom(request, fname):  # Recommended file view (used when file is accessed through recommendation)
     try:
         cnt = Count.objects.get(cnt_id = 1)
         cnt.rec+=1
