@@ -11,7 +11,8 @@ def start():
     """
     Start Function.
 
-    Function to check if the file to store the user file access data already exists or not, if not then create one.
+    Function to check if the file to store the user file access data 
+    already exists or not, if not then create one.
 
     Parameters:
     None
@@ -25,7 +26,8 @@ def start():
             fp.write("Files")
 
 
-lock = fasteners.InterProcessLock("recom_data.csv")  # Create a fasteners lock object
+# Create a fasteners lock object
+lock = fasteners.InterProcessLock("recom_data.csv")
 start()  # Call the start function
 
 
@@ -39,7 +41,8 @@ def get_recom(user_id):
     user_id (int/str): Unique ID of the user
 
     Returns:
-    list: A list of recommended files sorted in descending order of priority. With max length of list equals to 10.
+    list: A list of recommended files sorted in descending order of priority.
+          With max length of list equals to 10.
 
     """
 

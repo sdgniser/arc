@@ -181,7 +181,8 @@ class UserReport(Report):
     typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)
 
 
-# Model to store seperately the no. of files accessed from recommendations and no. of files from self browsing.
+# Model to store seperately the no. of files accessed from recommendations
+# and no. of files from self browsing.
 class Count(models.Model):
     cnt_id = models.IntegerField(primary_key=True, default=1)
     rec = models.IntegerField(default=0)
