@@ -39,7 +39,7 @@ def index_view(request):
     else:
         auth = 0
         rec_list = []
-    return render(request, 'main/index.htm', {'school_list': school_list, 'auth' : auth, 'recom' : rec_list, 'count' : cnt})
+    return render(request, 'main/index.htm', {'school_list': school_list, 'auth': auth, 'recom': rec_list, 'count': cnt})
 
 def school_view(request, abbrev):
     try:
@@ -262,7 +262,8 @@ def add_crs(request, abbrev):
         form = CourseForm()
     return render(request, 'main/add-crs.htm', {'sch': s, 'form': form})
 
-def file_view(request, fname):  # Normal file view (used when file is accessed through normal browsing)
+# Normal file view (used when file is accessed through normal browsing)
+def file_view(request, fname):
     try:
         cnt = Count.objects.get(cnt_id = 1)
         cnt.own+=1
@@ -274,7 +275,8 @@ def file_view(request, fname):  # Normal file view (used when file is accessed t
     except Item.DoesNotExist:
         raise Http404("File not found")
 
-def file_view_recom(request, fname):  # Recommended file view (used when file is accessed through recommendation)
+# Recommended file view (used when file is accessed through recommendation)
+def file_view_recom(request, fname):
     try:
         cnt = Count.objects.get(cnt_id = 1)
         cnt.rec+=1

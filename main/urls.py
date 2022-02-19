@@ -35,7 +35,9 @@ urlpatterns = [
 
     path('comm_del/<cid>/', views.delete_comment, name='delete_comment'),
 
+    # File access through self browsing.
     path('f/<fname>/', views.file_view, name='file'),
+    # File access using recommendations.
     path('g/<fname>/', views.file_view_recom, name='file_recom'),
 
     path('report/c/<cid>/', views.report_comment, name='report_comment'),
