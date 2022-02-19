@@ -42,7 +42,10 @@ def index_view(request):
     return render(
         request,
         "main/index.htm",
-        {"school_list": school_list, "auth": auth, "recom": rec_list, "count": cnt},
+        {"school_list": school_list,
+        "auth": auth,
+        "recom": rec_list,
+        "count": cnt},
     )
 
 def school_view(request, abbrev):

@@ -11,7 +11,7 @@ def start():
     """
     Start Function.
 
-    Function to check if the file to store the user file access data 
+    Function to check if the file to store the user file access data
     already exists or not, if not then create one.
 
     Parameters:
