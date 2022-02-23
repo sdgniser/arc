@@ -4,7 +4,8 @@ Python file to handle the recommendation system.
 
 import os
 import pandas as pd
-import fasteners
+# import fasteners
+# import threading
 
 
 def start():
@@ -26,8 +27,9 @@ def start():
             fp.write("Files")
 
 
-# Create a fasteners lock object
-lock = fasteners.InterProcessLock("recom_data.csv")
+# Create a lock object
+# lock = threading.Lock()
+# lock = fasteners.InterProcessLock('recom_data.csv')
 start()  # Call the start function
 
 
@@ -65,13 +67,13 @@ def get_recom(user_id):
         return []
 
     else:
-        lock.acquire()
+        # lock.acquire()
 
         df = pd.read_csv("recom_data.csv", index_col="Files")
         df[user_id] = [0] * len(df)
         df.to_csv("recom_data.csv")
 
-        lock.release()
+        # lock.release()
         return []
 
 
@@ -90,7 +92,7 @@ def update(file, user_id):
 
     """
 
-    lock.acquire()
+    # lock.acquire()
 
     user_id = str(user_id)
     df = pd.read_csv("recom_data.csv", index_col="Files")
@@ -113,5 +115,4 @@ def update(file, user_id):
             df.loc[[file], [user_id]] = 10
 
     df.to_csv("recom_data.csv")
-
-    lock.release()
+    # lock.release()
