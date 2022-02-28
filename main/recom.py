@@ -30,6 +30,7 @@ def start():
 
 start()  # Call the start function
 
+
 def get_recom(user_id):
     """
     Get Recommendations Function.
