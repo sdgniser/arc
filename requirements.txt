@@ -3,4 +3,3 @@ django-authtools>=1.6.0
 django-widget-tweaks>=1.4.3
 psycopg2>=2.7.6
 pandas>=1.4.0
-fasteners>=0.17.3
