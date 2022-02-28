@@ -69,52 +69,16 @@ blockquote::after{
 
 
 
-      
 /* CSS for Recommendation Section */
-.card {
-  border-radius: 10px;
-  padding: 10px;
-  background-color:rgb(230, 230, 230);
-}
-
-.topic {
-  margin-top: -10px;
-  padding-left: 10px;
-}
-
-.text {
-  overflow: auto;
-  text-align: justify;
-  text-justify: inter-word;
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px;
-  padding: 3px 7px;
-  overflow-x: scroll;
-  overflow-y:hidden;
-}
 
 .btn {
   text-align: center;
   border-radius: 5px;
   background-color: rgb(0, 136, 199);
   padding: 5px 7px;
+  color:white;
 }
 
 .btn:hover {
   background-color: rgb(66, 195, 255);
-}
-
-div.gallery {
-  background-color:rgb(236, 217, 228);
-  margin: 2px;
-  padding: 0px 15px;
-  border: 2px solid #ccc;
-  float: left;
-  text-align: center;
-  border-radius: 5px;
-  width: max-content;
-}
-
-div.gallery:hover {
-  border: 2px solid #777;
 }

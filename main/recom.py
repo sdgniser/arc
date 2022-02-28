@@ -4,8 +4,6 @@ Python file to handle the recommendation system.
 
 import os
 import pandas as pd
-# import fasteners
-# import threading
 
 
 def start():
@@ -20,18 +18,17 @@ def start():
 
     Returns:
     None
-
     """
     if not os.path.exists("recom_data.csv"):
         with open("recom_data.csv", "a") as fp:
             fp.write("Files")
 
+    global df, val_count
+    val_count = 0
+    df = pd.read_csv("recom_data.csv", index_col="Files")
 
-# Create a lock object
-# lock = threading.Lock()
-# lock = fasteners.InterProcessLock('recom_data.csv')
+
 start()  # Call the start function
-
 
 def get_recom(user_id):
     """
@@ -45,11 +42,9 @@ def get_recom(user_id):
     Returns:
     list: A list of recommended files sorted in descending order of priority.
           With max length of list equals to 10.
-
     """
 
     user_id = str(user_id)
-    df = pd.read_csv("recom_data.csv", index_col="Files")
 
     if user_id in df.columns:
         if len(df) > 0:
@@ -58,7 +53,6 @@ def get_recom(user_id):
             wght = wght.loc[:, wght.columns != user_id]
 
             wght["mean"] = wght.mean(axis=1)
-
             final = wght[["mean"]]
             final = final.sort_values(by=["mean"], ascending=False)[:10]
 
@@ -67,13 +61,7 @@ def get_recom(user_id):
         return []
 
     else:
-        # lock.acquire()
-
-        df = pd.read_csv("recom_data.csv", index_col="Files")
         df[user_id] = [0] * len(df)
-        df.to_csv("recom_data.csv")
-
-        # lock.release()
         return []
 
 
@@ -92,27 +80,21 @@ def update(file, user_id):
 
     """
 
-    # lock.acquire()
-
     user_id = str(user_id)
-    df = pd.read_csv("recom_data.csv", index_col="Files")
 
-    if file in df.index:
-        if user_id in df.columns:
-            df[user_id] = df[user_id].apply(lambda x: round((x * 0.8), 2))
-            df.loc[[file], [user_id]] = 10
-        else:
-            df[user_id] = [0] * len(df)
-            df.loc[[file], [user_id]] = 10
+    if user_id in df.columns:
+        df[user_id] = df[user_id].apply(lambda x: round((x * 0.8), 2))
     else:
-        if user_id in df.columns:
-            df.loc[file] = [0] * len(df.columns)
-            df[user_id] = df[user_id].apply(lambda x: round((x * 0.8), 2))
-            df.loc[[file], [user_id]] = 10
-        else:
-            df[user_id] = [0] * len(df)
-            df.loc[file] = [0] * len(df.columns)
-            df.loc[[file], [user_id]] = 10
+        df[user_id] = [0] * len(df)
 
-    df.to_csv("recom_data.csv")
-    # lock.release()
+    if file not in df.index:
+        df.loc[file] = [0]*len(df.columns)
+
+    df.loc[[file], [user_id]] = 10
+
+    global val_count
+    val_count += 1
+
+    if val_count >= 5:
+        df.to_csv("recom_data.csv")
+        val_count = 0

@@ -1,57 +1,24 @@
 <!-- HTML file for recommendation section -->
 
 {% block recom %}
-<div style="width: 100%;margin-bottom: 15px;">
-  <div class="card">
-    <div class="topic">
-      <h3>Recommended for you,</h3>
-      <p hidden style="text-align: right;margin-top: -20px;">rec/self: {{ count.rec }}/{{ count.own }}</p>
-    </div>
-    
-    <div class="text">
-      <table align="center">
-        <tr>
+  <p hidden id="data">recom/self: {{ count.rec }}/{{ count.own }}</p>
+    <p><b>Recommendations for you:</b><br>
 
-          {% if auth %}
-            {% if recom %}
-              {% for item in recom %}
-                <td>
-                  
-                  <a href="{% url 'file_recom' item.fl %}" title="{{ item.itr.course }}">
-                    <div class="gallery" style="color:rgb(255, 0, 0);line-height: 0.8em;">
-                      <h4>{{ item.name }}</h4>
-                      <h3>{{ item.itr }}</h3>
-                      <p>{{ item.itr.inst }}</p>
-                    </div>
-                  </a>
+      {% if auth %}
+        {% if recom %}
+          {% for item in recom %}
+            <a href="{% url 'file' 'recom' item.fl %}" title="{{ item.itr.course }}">
+              {{ item.itr.course.code | title }}, {{ item.name |capfirst }} ({{ item.itr.year }}, {{ item.itr.inst|capfirst}})</a>
+              {% if not forloop.last %}<b>&nbsp;|&nbsp;</b>{% endif %}
+          {% endfor %}
 
-                </td>
-
-              {% endfor %}
-
-            {% else %}
-              <center>
-                <h4>You don't have much recommendations yet.<br>
-                Browse more (access some files) to get recommendations.</h4>
-              </center>
-            {% endif %}
+        {% else %}
+          <p>You don't have much recommendations yet. Browse more (access some files) to get recommendations.</p>
+        {% endif %}
                 
-          {% else %}
-          <center>
-            <h4>You are not logged in.<br>
-            Please login to get recommendations.</h4>
-            <a href="{% url 'login' %}">
-              <button class="btn" style="color:white;">
-                  <b>Login Here</b>
-              </button>
-            </a>
-            <p></p>
-          </center>
-          {% endif %}
-
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
+      {% else %}
+        You are not logged in. Please login to get recommendations. <a href="{% url 'login' %}"><b>Login Here</b></a>
+      {% endif %}
+    </p>
+  <br>
 {% endblock %}

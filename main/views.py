@@ -268,25 +268,13 @@ def add_crs(request, abbrev):
     return render(request, 'main/add-crs.htm', {'sch': s, 'form': form})
 
 
-# Normal file view (used when file is accessed through normal browsing)
-def file_view(request, fname):
+def file_view(request, source, fname):
     try:
         cnt = Count.objects.get(cnt_id=1)
-        cnt.own += 1
-        cnt.save()
-        i = Item.objects.get(fl=fname)
-        if request.user.is_authenticated:
-            update(fname, request.user.id)
-        return render(request, 'main/file.htm', {'item': i})
-    except Item.DoesNotExist:
-        raise Http404("File not found")
-
-
-# Recommended file view (used when file is accessed through recommendation)
-def file_view_recom(request, fname):
-    try:
-        cnt = Count.objects.get(cnt_id=1)
-        cnt.rec += 1
+        if source == 'self':
+            cnt.own += 1
+        elif source == 'recom':
+            cnt.rec += 1
         cnt.save()
         i = Item.objects.get(fl=fname)
         if request.user.is_authenticated:
