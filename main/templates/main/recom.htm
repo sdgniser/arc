@@ -1,0 +1,24 @@
+<!-- HTML file for recommendation section -->
+
+{% block recom %}
+  <p hidden id="data">recom/self: {{ count.rec }}/{{ count.own }}</p>
+    <p><b>Recommendations for you:</b><br>
+
+      {% if auth %}
+        {% if recom %}
+          {% for item in recom %}
+            <a href="{% url 'file' 'recom' item.fl %}" title="{{ item.itr.course }}">
+              {{ item.itr.course.code | title }}, {{ item.name |capfirst }} ({{ item.itr.year }}, {{ item.itr.inst|capfirst}})</a>
+              {% if not forloop.last %}<b>&nbsp;|&nbsp;</b>{% endif %}
+          {% endfor %}
+
+        {% else %}
+          You don't have much recommendations yet. Browse more (access some files) to get recommendations.
+        {% endif %}
+                
+      {% else %}
+        You are not logged in. Please login to get recommendations. <a href="{% url 'login' %}"><b>Login Here</b></a>
+      {% endif %}
+    </p>
+  <br>
+{% endblock %}
