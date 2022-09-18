@@ -15,17 +15,36 @@ from urllib.parse import urlencode
 from authtools.models import User
 from authtools.forms import UserCreationForm
 
-from .models import Profile, School, Course, Itr, Item, SEMS
+from .models import Profile, School, Course, Itr, Item, SEMS, Count
 from .forms import *
 from .helper import *
 
 import datetime
+from .recom import *
 
 REV_DICT_SEMS = dict([i[::-1] for i in SEMS])
 
 def index_view(request):
     school_list = School.objects.order_by('abbr')
-    return render(request, 'main/index.htm', {'school_list': school_list})
+    try:
+        cnt = Count.objects.get(cnt_id=1)
+    except Count.DoesNotExist:
+        cnt = Count(cnt_id=1, rec=0, own=0)
+        cnt.save()
+
+    if request.user.is_authenticated:
+        auth = 1
+        rec = get_recom(request.user.id)  # Get Recommendations
+        rec_list = Item.objects.filter(fl__in=rec)
+    else:
+        auth = 0
+        rec_list = []
+    return render(request, "main/index.htm", {
+        "school_list": school_list,
+        "auth": auth,
+        "recom": rec_list,
+        "count": cnt
+        })
 
 def school_view(request, abbrev):
     try:
@@ -251,9 +270,18 @@ def add_crs(request, abbrev):
         form = CourseForm()
     return render(request, 'main/add-crs.htm', {'sch': s, 'form': form})
 
-def file_view(request, fname):
+
+def file_view(request, source, fname):
     try:
-        i = Item.objects.get(fl = fname)
+        cnt = Count.objects.get(cnt_id=1)
+        if source == 'self':
+            cnt.own += 1
+        elif source == 'recom':
+            cnt.rec += 1
+        cnt.save()
+        i = Item.objects.get(fl=fname)
+        if request.user.is_authenticated:
+            update(fname, request.user.id)
         return render(request, 'main/file.htm', {'item': i})
     except Item.DoesNotExist:
         raise Http404("File not found")
