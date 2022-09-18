@@ -13,7 +13,11 @@ db.sqlite3
 /main/log
 /main/migrations
 
+env/
+
 node_modules/
 package-lock.json
 
 tags
+gunicorn/gunicorn.conf.py
+gunicorn/gunicorn.env

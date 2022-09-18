@@ -66,8 +66,11 @@ def itr_view(request, cd, yr, sea):
             'report_form': form2,
             'item_report_form': form3
             })
-    except Itr.DoesNotExist:
-        raise Http404('No such iteration was found')
+    except Exception as e:
+        raise e
+    # except Itr.DoesNotExist:
+        # raise Http404('No such iteration was found')
+
 
 def user_view(request, uid):
     try:
@@ -150,7 +153,7 @@ def signup(request):
 
             # Verification email
             subj = 'Verification of email address - NISER Archive'
-            dmn = get_current_site(request).domain + '/arc'
+            dmn = 'http://10.0.2.35/arc'
             htm = render_to_string('main/verify.htm', {'user': user, 'vid': uvid, 'dmn': dmn})
             txt = render_to_string('main/verify.txt', {'user': user, 'vid': uvid, 'dmn': dmn})
             mfrom = 'NISER Archive'
