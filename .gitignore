@@ -21,3 +21,4 @@ package-lock.json
 tags
 gunicorn/gunicorn.conf.py
 gunicorn/gunicorn.env
+recom_data.csv
