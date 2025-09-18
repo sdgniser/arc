@@ -11,8 +11,8 @@
       <ul class="list-group list-group-flush">
       {% for i in recent_uploads %}
         <li class="list-group-item">
-          <span style="float-left">
-          <a href="{% url 'user' i.op.id %}">{{ i.op.name }}</a> uploaded <a href="{% url 'file' i.fl %}">{{ i.name }}</a>
+          <span style="float: left;">
+          <a href="{% url 'user' i.op.id %}">{{ i.op.name }}</a> uploaded <a href="{% url 'file' 'self' i.fl.name|cut:'arc/media/' %}">{{ i.name }}</a>
           to <a href="{% url 'itr' i.itr.course.code i.itr.year i.itr.sem_name.lower %}"> {{ i.itr }}</a>.
           </span>
           <span class="float-right">

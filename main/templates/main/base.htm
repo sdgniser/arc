@@ -1,110 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-  <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="{% static 'main/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'main/css/starter-template.css' %}">
-  <link rel="stylesheet" href="{% static 'main/css/sticky-footer-navbar.css' %}">
-  <link href="{% static 'main/node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css' %}" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
-  {% block css %} {% endblock %}
-  <title>{% block title %} {% endblock %} | NISER Archive</title>
-  </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="NISER Archive - Community-driven repository for academic resources">
+    
+    <!-- Enhanced CSS -->
+    <link rel="stylesheet" href="{% static 'main/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link href="{% static 'main/node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    /* Force Account button color and hover at highest specificity */
+    #guestDropdown.account-btn, button#guestDropdown, .account-btn, button.account-btn {
+        background: #f59e0b !important;
+        color: #fff !important;
+        border-radius: 2rem !important;
+        box-shadow: 0 2px 8px -2px #f59e0b55 !important;
+        padding: 0.5rem 1.6rem !important;
+        font-weight: 600 !important;
+        font-size: 1.08rem !important;
+        border: none !important;
+        outline: none !important;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.18s, box-shadow 0.18s, transform 0.16s, filter 0.18s;
+        position: relative;
+        z-index: 2;
+    }
+    #guestDropdown.account-btn:hover, button#guestDropdown:hover, .account-btn:hover, button.account-btn:hover,
+    #guestDropdown.account-btn:focus, button#guestDropdown:focus, .account-btn:focus, button.account-btn:focus {
+        background: #e09c1b !important;
+        color: #fff !important;
+        box-shadow: 0 8px 24px 0 #f59e0bcc, 0 0 0 3px #f59e0b44 !important;
+        transform: translateY(-4px) scale(1.07) rotate(-2deg);
+        filter: brightness(1.08) drop-shadow(0 0 8px #f59e0b88);
+    }
+        :root {
+            --primary-color: #212529;
+            --primary-dark: #000;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --background-light: #f8fafc;
+            --text-dark: #212529;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
 
-  <body>
-  <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="/arc">NISER Archive</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
 
-    <div class="collapse navbar-collapse" id="mainNavbar">
+        /* Enhanced Navigation */
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent-color) !important;
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+            background-clip: unset;
+        }
 
-      <!-- <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
+        .navbar-dark {
+            background: #212529 !important;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
 
-      <ul class="navbar-nav ml-auto">
-      <!-- <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li> -->
-      {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">{{ user.name }}</a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-          <a class="dropdown-item" href="{% url 'user' user.id %}">
-            <span class="oi oi-person"></span> Profile
-          </a>
-          <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.get_full_path|urlencode }}">
-            <span class="oi oi-account-logout"></span> Log Out
-          </a>
-        </div>
-        </li>
-      {% else %}
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Not Logged In</a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-          <a class="dropdown-item" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}"> <span class="oi oi-account-login"></span> Log In</a>
-          <a class="dropdown-item" href="{% url 'signup' %}"> <span class="oi oi-person"></span> Sign Up</a>
-        </div>
-        </li>
-      {% endif %}
-      </ul>
-    </div>
-    </nav>
-  </header>
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.75rem 1rem !important;
+        }
 
-  <main class="container container-fluid">
-    {% block alerts %} {% endblock %}
-    {% block recom %} {% endblock %}
-    <h3>{% block l3h %} {% endblock %}</h3>
-    <h5>{% block l5h %} {% endblock %}</h5>
-    {% block content %} {% endblock %}
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-1px);
+        }
 
-    <!-- generic modal -->
-    <div id="generic-modal">
-      <div class="modal fade" id="generic-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+        }
 
-            <div class="modal-header">
-              <h5 class="modal-title" id="generic-modal-header"> Modal Header </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        .navbar-nav .nav-link:hover::after {
+            width: 80%;
+            left: 10%;
+        }
+
+        /* Search Bar Enhancement */
+        .navbar-search {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .navbar-search input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--accent-color) !important;
+            border-radius: 50px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-search input:focus {
+            background: rgba(255,255,255,0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+            outline: none;
+        }
+
+        .navbar-search input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .navbar-search .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+        }
+
+        /* Dropdown Enhancement */
+        .dropdown-menu {
+            border: none;
+        /* Animated Account Button */
+        button.account-btn, .account-btn {
+            display: inline-flex;
+            align-items: center;
+            background: #f59e0b !important;
+            color: #fff !important;
+            border-radius: 2rem !important;
+            box-shadow: 0 2px 8px -2px #f59e0b55 !important;
+            padding: 0.5rem 1.6rem !important;
+            font-weight: 600 !important;
+            font-size: 1.08rem !important;
+            border: none !important;
+            outline: none !important;
+            cursor: pointer;
+            transition: background 0.18s, box-shadow 0.18s, transform 0.16s, filter 0.18s;
+            position: relative;
+            z-index: 2;
+        }
+        button.account-btn:hover, .account-btn:hover, button.account-btn:focus, .account-btn:focus {
+            background: #e09c1b !important;
+            box-shadow: 0 8px 24px 0 #f59e0bcc, 0 0 0 3px #f59e0b44 !important;
+            color: #fff !important;
+            transform: translateY(-4px) scale(1.07) rotate(-2deg);
+            filter: brightness(1.08) drop-shadow(0 0 8px #f59e0b88);
+        }
+        .account-btn .fa-user-circle, .account-btn .fa-user-plus, .account-btn .fa-sign-in-alt {
+            margin-right: 0.5rem;
+        }
+            box-shadow: var(--shadow-lg);
+            border-radius: 12px;
+            padding: 0.5rem;
+            background: white;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-item:hover {
+            background: var(--background-light);
+            color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .quick-action-btn {
+            padding: 0.5rem;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 160px);
+        }
+
+        /* Enhanced Cards */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 12px;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Footer Enhancement */
+        .footer {
+            background: #212529;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-nav {
+            background: transparent;
+            padding: 1rem 0;
+        }
+
+        .breadcrumb {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin: 0;
+        }
+
+        /* Notifications */
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar-search {
+                margin: 1rem 0;
+                max-width: 100%;
+            }
+            
+            .quick-actions {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            main {
+                margin-top: 70px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    
+    {% block css %}{% endblock %}
+    <title>{% block title %}{% endblock %} | NISER Archive</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="/arc">
+                    <i class="fas fa-archive me-2"></i>NISER Archive
+                </a>
+                
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <!-- Search Bar -->
+                    <div class="navbar-search mx-auto d-none d-lg-block">
+                        <i class="fas fa-search search-icon"></i>
+                        <input class="form-control" type="text" placeholder="Search resources, courses, schools..." aria-label="Search" id="globalSearch">
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav me-auto d-lg-none">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/arc/schools/"><i class="fas fa-university me-2"></i>Schools</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/arc/recent/"><i class="fas fa-clock me-2"></i>Recent</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/arc/popular/"><i class="fas fa-fire me-2"></i>Popular</a>
+                        </li>
+                    </ul>
+
+                    <!-- Quick Actions & User Menu -->
+                    <div class="d-flex align-items-center">
+                        <!-- Quick Actions (Desktop) -->
+                        <div class="quick-actions d-none d-lg-flex me-3">
+                            <a class="quick-action-btn" title="Leaderboard" href="/arc/stat.htm">
+                                <i class="fas fa-trophy"></i>
+                            </a>
+                        </div>
+
+                        <!-- User Dropdown: Guest or Authenticated -->
+                        {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="account-btn dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" type="button">
+                                <img src="https://ui-avatars.com/api/?name={{ user.name|urlencode }}&background=f59e0b&color=fff&size=32" 
+                                     class="rounded-circle me-2" width="32" height="32" alt="Avatar">
+                                <span class="d-none d-md-inline">{{ user.name }}</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <div class="dropdown-header">
+                                    <strong>{{ user.name }}</strong><br>
+                                    <small class="text-muted">{{ user.email }}</small>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.get_full_path|urlencode }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Log Out
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="dropdown">
+                            <button id="guestDropdown" data-bs-toggle="dropdown" aria-expanded="false" type="button" style="background:#f59e0b !important; color:#fff !important; border-radius:2rem !important; box-shadow:0 2px 8px -2px #f59e0b55 !important; padding:0.5rem 1.6rem !important; font-weight:600 !important; font-size:1.08rem !important; border:none !important; outline:none !important; display:inline-flex; align-items:center; cursor:pointer; transition:background 0.18s, box-shadow 0.18s, transform 0.16s; position:relative; z-index:2;">
+                                <i class="fas fa-user-circle me-2"></i>
+                                <span class="d-none d-md-inline">Account</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">
+                                    <i class="fas fa-sign-in-alt"></i> Log In
+                                </a>
+                                <a class="dropdown-item" href="{% url 'signup' %}">
+                                    <i class="fas fa-user-plus"></i> Sign Up
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+        </nav>
+    </header>
 
-            <div class="modal-body" id="generic-modal-body">
-              <div id="generic-modal-msg">
-                Modal Message
-              </div>
+    <main class="container-fluid">
+        <!-- Breadcrumb -->
+        {% block breadcrumb %}{% endblock %}
+        
+        <!-- Alerts -->
+        {% block alerts %}{% endblock %}
+        
+        <!-- Recommendations/Hero Section -->
+        {% block recom %}{% endblock %}
+        
+        <!-- Page Headers -->
+        {% if block.super %}
+            <div class="page-header mb-4">
+                {% block l3h %}{% endblock %}
+                {% block l5h %}{% endblock %}
             </div>
+        {% endif %}
+        
+        <!-- Main Content -->
+        {% block content %}{% endblock %}
 
-            <div class="modal-footer" id="generic-modal-footer">
-              Modal Footer
+        <!-- Upload Modal -->
+        <div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Upload Resource</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="uploadForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="resourceTitle" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="resourceTitle" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="resourceSchool" class="form-label">School</label>
+                                        <select class="form-select" id="resourceSchool" required>
+                                            <option value="">Select School</option>
+                                            <option value="sps">School of Physical Sciences</option>
+                                            <option value="sms">School of Mathematical Sciences</option>
+                                            <option value="scs">School of Computer Sciences</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="resourceDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="resourceDescription" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="resourceFile" class="form-label">File</label>
+                                <input type="file" class="form-control" id="resourceFile" accept=".pdf,.doc,.docx,.ppt,.pptx">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Upload Resource</button>
+                    </div>
+                </div>
             </div>
-
-          </div>
         </div>
-      </div>
-    </div>
-    <!-- end generic modal -->
 
-  </main>
+        <!-- Generic Modal -->
+        <div id="generic-modal">
+            <div class="modal fade" id="generic-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="generic-modal-header">Modal Header</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="generic-modal-body">
+                            <div id="generic-modal-msg">Modal Message</div>
+                        </div>
+                        <div class="modal-footer" id="generic-modal-footer">
+                            Modal Footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-  <footer class="footer">
-    <div class="container">
-      <span class="text-muted">Coding Club | NISER, Bhubaneswar</span>
-      <span class="float-right"><a id="faq-link" href="{% url 'faq' %}">FAQ</a></span>
-    </div>
-  </footer>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-code me-2"></i>
+                        <span>Coding Club | NISER, Bhubaneswar</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="float-end">
+                        <a href="{% url 'faq' %}" class="me-3"><i class="fas fa-question-circle me-1"></i>FAQ</a>
+                        <a href="/arc/about/"><i class="fas fa-info-circle me-1"></i>About</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <script src="{% static 'main/node_modules/jquery/dist/jquery.min.js' %}"></script>
-  <script src="{% static 'main/node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
-  <script src="{% static 'main/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'main/node_modules/showdown/dist/showdown.min.js' %}"></script>
-  <script src="{% static 'main/js/main.js'%}"></script>
-  {% block js %} {% endblock %}
-  </body>
+    <!-- Scripts -->
+    <script src="{% static 'main/node_modules/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'main/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'main/node_modules/showdown/dist/showdown.min.js' %}"></script>
+    <script>
+        // Enhanced Search Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('globalSearch');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value;
+                    if (query.length > 2) {
+                        // Implement live search here
+                        console.log('Searching for:', query);
+                    }
+                });
+
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        window.location.href = `/arc/search/?q=${encodeURIComponent(this.value)}`;
+                    }
+                });
+            }
+
+            // Upload form handling
+            const uploadForm = document.getElementById('uploadForm');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Handle upload logic here
+                    console.log('Upload form submitted');
+                });
+            }
+        });
+    </script>
+    <script src="{% static 'main/js/main.js' %}"></script>
+    {% block js %}{% endblock %}
+</body>
 </html>

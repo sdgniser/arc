@@ -2,33 +2,85 @@
 
 {% block alerts %}
   {% if request.GET.ver == 'True' %}
-    <div class="alert alert-success">Your email address has been verified.</div>
+    <div class="alert alert-success text-center">Your email address has been verified.</div>
   {% endif %}
   {% if request.GET.su == 'True' %}
-    <div class="alert alert-primary">Thank you for signing up. We have sent you a verification email.</div>
+    <div class="alert alert-primary text-center">Thank you for signing up. We have sent you a verification email.</div>
   {% endif %}
 {% endblock %}
 
 {% block alert-info %}
 {% endblock %}
 
-{% block title %}Home{% endblock %}
+{% block title %}NISER Archive{% endblock %}
 
-{% block recom %}{% include 'main/recom.htm' %}{% endblock %}
+{% block recom %}
+<section class="bg-light border-bottom py-5 mb-4">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h1 class="display-4 fw-bold mb-3" style="color:#2c3e50;">NISER Archive</h1>
+        <p class="lead mb-4" style="color:#34495e;">A community-driven repository for notes and question papers, created by SDG NISER. Share, discover, and access academic resources to help everyone succeed.</p>
+        <div class="mb-3">
+          <a href="{% url 'login' %}" class="btn btn-warning btn-lg me-2 login-btn" style="color:#fff; background-color:#f59e0b; border-color:#f59e0b;">Log In</a>
+          <a href="{% url 'signup' %}" class="btn btn-outline-warning btn-lg signup-btn" style="color:#f59e0b; border-color:#f59e0b;">Sign Up</a>
+        </div>
+      </div>
+      <div class="col-md-5 text-center d-none d-md-block">
+        <img src="https://www.niser.ac.in/~smishra/event/2022sdg/static/cc_logo.png" alt="Archive" class="img-fluid" style="max-height:220px;">
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
-{% block l3h %}Schools{% endblock %}
+{% block l3h %}<h2 class="text-center my-4" style="color:#2c3e50;">Browse Schools</h2>{% endblock %}
 
 {% block content %}
-  {% if school_list %}
-    <ul class="list-group">
-    {% for school in school_list %}
-      <li class="list-group-item"><a href="{% url 'school' school.abbr %}">{{ school.name }}</a></li>
-    {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no schools.</p>
-  {% endif %}
-  <p>
-  <br> <a href="{% url 'log' %}"> Recent activity </a>
-  </p>
+  <div class="container mb-5">
+    {% if school_list %}
+      <ul class="list-group list-group-flush shadow-sm">
+        {% for school in school_list %}
+          <a href="{% url 'school' school.abbr %}" style="text-decoration:none;">
+            <li class="list-group-item py-4" style="border: none; border-bottom: 1px solid #eee; cursor:pointer;">
+              <span class="fw-bold" style="color:#34495e; font-size:1.2rem;">{{ school.name }}</span>
+            </li>
+          </a>
+        {% endfor %}
+      </ul>
+{% block extra_css %}
+<style>
+  .login-btn {
+    transition: background 0.18s, box-shadow 0.18s, transform 0.16s, filter 0.18s;
+  }
+  .login-btn:hover, .login-btn:focus {
+    background-color: #e09c1b !important;
+    color: #fff !important;
+    box-shadow: 0 8px 24px 0 #f59e0bcc, 0 0 0 3px #f59e0b44 !important;
+    transform: translateY(-4px) scale(1.07) rotate(-2deg);
+    filter: brightness(1.08) drop-shadow(0 0 8px #f59e0b88);
+  }
+  .signup-btn:active, .signup-btn:focus {
+    color: #fff !important;
+    background-color: #f59e0b !important;
+    border-color: #f59e0b !important;
+  }
+  .signup-btn:hover {
+    color: #fff !important;
+    background-color: #f59e0b !important;
+    border-color: #f59e0b !important;
+  }
+  .list-group a:hover .fw-bold {
+    text-decoration: underline;
+    color: #f59e0b;
+  }
+</style>
+{% endblock %}
+    {% else %}
+      <div class="alert alert-info text-center mt-4">There are no schools yet. Be the first to contribute!</div>
+    {% endif %}
+    <div class="text-center mt-5">
+      <a href="{% url 'log' %}" class="btn btn-link" style="color:#f59e0b;">Recent activity</a>
+    </div>
+  </div>
 {% endblock %}

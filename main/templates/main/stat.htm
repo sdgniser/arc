@@ -17,11 +17,11 @@
           </tr>
         </thead>
         <tbody>
-      {% for i in item_list %}
+      {% for user in top_uploaders %}
         <tr>
-          <th scope="row"> {{ i.pos }} </th>
-          <td> {{ i.op.name }} </td>
-          <td> {{ i.id__count }} </td>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ user.name }}</td>
+          <td>{{ user.upload_count }}</td>
         </tr>
       {% endfor %}
         </tbody>

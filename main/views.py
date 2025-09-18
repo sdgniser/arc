@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.urls import reverse
@@ -15,21 +16,55 @@ from urllib.parse import urlencode
 from authtools.models import User
 from authtools.forms import UserCreationForm
 
-from .models import Profile, School, Course, Itr, Item, SEMS, Count
+from .models import Profile, School, Course, Itr, Item, SEMS, Count as CountModel
 from .forms import *
 from .helper import *
 
 import datetime
 from .recom import *
 
+from django.db.models import Count
+from authtools.models import User
+from .models import Item
+
+def stat_view(request):
+    top_uploaders = User.objects.filter(item__appr=True)\
+        .annotate(upload_count=Count('item__id'))\
+        .order_by('-upload_count')[:10]
+    return render(request, 'main/stat.htm', {'top_uploaders': top_uploaders})
+
+def search(request):
+    query = request.GET.get('q', '').strip()
+    schools = courses = itrs = items = []
+    if query:
+        schools = School.objects.filter(
+            (Q(name__icontains=query) | Q(abbr__icontains=query)) & Q(appr=True)
+        )
+        courses = Course.objects.filter(
+            (Q(name__icontains=query) | Q(code__icontains=query)) & Q(appr=True)
+        ).select_related('school')
+        itrs = Itr.objects.filter(
+            (Q(year__icontains=query) | Q(inst__icontains=query) | Q(course__name__icontains=query) | Q(course__code__icontains=query)) & Q(appr=True)
+        ).select_related('course', 'course__school')
+        items = Item.objects.filter(
+            (Q(name__icontains=query) | Q(desc__icontains=query)) & Q(appr=True)
+        ).select_related('itr__course__school')
+    return render(request, 'main/search.htm', {
+        'schools': schools,
+        'courses': courses,
+        'itrs': itrs,
+        'items': items,
+        'query': query
+    })
+
 REV_DICT_SEMS = dict([i[::-1] for i in SEMS])
 
 def index_view(request):
     school_list = School.objects.order_by('abbr')
     try:
-        cnt = Count.objects.get(cnt_id=1)
-    except Count.DoesNotExist:
-        cnt = Count(cnt_id=1, rec=0, own=0)
+        cnt = CountModel.objects.get(cnt_id=1)
+    except CountModel.DoesNotExist:
+        cnt = CountModel(cnt_id=1, rec=0, own=0)
         cnt.save()
 
     if request.user.is_authenticated:
@@ -45,6 +80,7 @@ def index_view(request):
         "recom": rec_list,
         "count": cnt
         })
+
 
 def school_view(request, abbrev):
     try:
@@ -172,7 +208,7 @@ def signup(request):
 
             # Verification email
             subj = 'Verification of email address - NISER Archive'
-            dmn = 'http://10.0.2.35/arc'
+            dmn = 'http://10.10.0.173/arc'
             htm = render_to_string('main/verify.htm', {'user': user, 'vid': uvid, 'dmn': dmn})
             txt = render_to_string('main/verify.txt', {'user': user, 'vid': uvid, 'dmn': dmn})
             mfrom = 'NISER Archive'
@@ -273,7 +309,7 @@ def add_crs(request, abbrev):
 
 def file_view(request, source, fname):
     try:
-        cnt = Count.objects.get(cnt_id=1)
+        cnt = CountModel.objects.get(cnt_id=1)
         if source == 'self':
             cnt.own += 1
         elif source == 'recom':
