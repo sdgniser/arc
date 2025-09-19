@@ -21,10 +21,12 @@
       <div class="col-md-7">
         <h1 class="display-4 fw-bold mb-3" style="color:#2c3e50;">NISER Archive</h1>
         <p class="lead mb-4" style="color:#34495e;">A community-driven repository for notes and question papers, created by SDG NISER. Share, discover, and access academic resources to help everyone succeed.</p>
+        {% if not user.is_authenticated %}
         <div class="mb-3">
           <a href="{% url 'login' %}" class="btn btn-warning btn-lg me-2 login-btn" style="color:#fff; background-color:#f59e0b; border-color:#f59e0b;">Log In</a>
           <a href="{% url 'signup' %}" class="btn btn-outline-warning btn-lg signup-btn" style="color:#f59e0b; border-color:#f59e0b;">Sign Up</a>
         </div>
+        {% endif %}
       </div>
       <div class="col-md-5 text-center d-none d-md-block">
         <img src="https://www.niser.ac.in/~smishra/event/2022sdg/static/cc_logo.png" alt="Archive" class="img-fluid" style="max-height:220px;">

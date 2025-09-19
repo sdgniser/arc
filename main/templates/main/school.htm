@@ -5,51 +5,41 @@
 {% block title %}{{ sch.abbr.upper }}{% endblock %}
 {% block l3h %}{{ sch }}{% endblock %}
 
-{% block content %}	
+{% block content %}
+<style>
+  .list-group-item.course-hover {
+    transition: box-shadow 0.18s, transform 0.16s, background 0.18s;
+    cursor: pointer;
+  }
+  .list-group-item.course-hover:hover {
+    background: #f9fafb;
+    box-shadow: 0 8px 24px 0 #f59e0b22, 0 0 0 3px #f59e0b22;
+    transform: translateY(-2px) scale(1.02);
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div style="width:100%; max-width: 800px;">
+    {% if course_list %}
+      <ul class="list-group shadow-sm w-100 mb-3">
+        {% for c in course_list %}
+        <li class="list-group-item d-flex align-items-center py-3 course-hover" style="border-radius: 12px; margin-bottom: 0.5rem;">
+          <a href="{% url 'course' c.code %}" class="fw-semibold text-decoration-none" style="color:#34495e; font-size:1.08rem;">{{ c }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>There are no courses.</p>
+    {% endif %}
 
-  {% if course_list %}
-    <ul class="list-group">
-      {% for c in course_list %}
-        <li class="list-group-item"><a href="{% url 'course' c.code %}">{{ c }}</a></li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no courses.</p>
-  {% endif %}	
-
-  {% if user.is_authenticated %}
-    <br>
-    <button type="button" id="course-modal-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#course-modal-inner">
-      <span class="oi oi-plus"> </span>  Add
-    </button>
-    <br>
-    <div id="course-modal">
-      <div class="modal fade" id="course-modal-inner" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-
-            <div class="modal-header">
-              <h5 class="modal-title" id="course-modal-header">
-                Add a new course to {{ sch.abbr.upper }}
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body" id="course-modal-body">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div>
-
-            <div class="modal-footer" id="course-modal-footer">
-            </div>
-
-          </div>
-        </div>
+    {% if user.is_authenticated %}
+      <div class="mb-4 text-end">
+        <a href="{% url 'add_crs' sch.abbr %}" class="btn btn-primary btn-sm">
+          <span class="oi oi-plus"></span> Add Course
+        </a>
       </div>
-    </div>
-  {% endif %}
-
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}

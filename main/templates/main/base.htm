@@ -13,6 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+    /* My Profile button: white text on hover */
+    .btn-outline-warning.me-2.d-none.d-lg-inline:hover,
+    .btn-outline-warning.me-2.d-none.d-lg-inline:focus {
+        color: #fff !important;
+        background: #e09c1b !important;
+        border-color: #e09c1b !important;
+    }
     /* Force Account button color and hover at highest specificity */
     #guestDropdown.account-btn, button#guestDropdown, .account-btn, button.account-btn {
         background: #f59e0b !important;
@@ -398,10 +405,11 @@
 
                         <!-- User Dropdown: Guest or Authenticated -->
                         {% if user.is_authenticated %}
+                        <a href="{% url 'user' user.id %}" class="btn btn-outline-warning me-2 d-none d-lg-inline" style="color:#f59e0b; border-color:#f59e0b; font-weight:600; border-radius:2rem;">
+                            <i class="fas fa-user-circle me-1"></i> My Profile
+                        </a>
                         <div class="dropdown">
                             <button class="account-btn dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" type="button">
-                                <img src="https://ui-avatars.com/api/?name={{ user.name|urlencode }}&background=f59e0b&color=fff&size=32" 
-                                     class="rounded-circle me-2" width="32" height="32" alt="Avatar">
                                 <span class="d-none d-md-inline">{{ user.name }}</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
@@ -410,9 +418,12 @@
                                     <small class="text-muted">{{ user.email }}</small>
                                 </div>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.get_full_path|urlencode }}">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Log Out
-                                </a>
+                                    <form method="post" action="{% url 'logout' %}" style="margin:0; padding:0;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; padding:0; width:100%; text-align:left;">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Log Out
+                                        </button>
+                                    </form>
                             </div>
                         </div>
                         {% else %}
@@ -538,7 +549,6 @@
                 <div class="col-md-6">
                     <div class="float-end">
                         <a href="{% url 'faq' %}" class="me-3"><i class="fas fa-question-circle me-1"></i>FAQ</a>
-                        <a href="/arc/about/"><i class="fas fa-info-circle me-1"></i>About</a>
                     </div>
                 </div>
             </div>
@@ -553,7 +563,6 @@
         // Enhanced Search Functionality
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('globalSearch');
-            
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
                     const query = this.value;
@@ -562,7 +571,6 @@
                         console.log('Searching for:', query);
                     }
                 });
-
                 searchInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
                         window.location.href = `/arc/search/?q=${encodeURIComponent(this.value)}`;
@@ -578,6 +586,24 @@
                     // Handle upload logic here
                     console.log('Upload form submitted');
                 });
+            }
+
+            // Random color for user avatar background
+            const avatarImg = document.getElementById('user-avatar-img');
+            if (avatarImg) {
+                // Generate a random color (not too light)
+                function getRandomColor() {
+                    const h = Math.floor(Math.random() * 360);
+                    const s = 60 + Math.floor(Math.random() * 30); // 60-90%
+                    const l = 35 + Math.floor(Math.random() * 25); // 35-60%
+                    return `hsl(${h},${s}%,${l}%)`;
+                }
+                const color = getRandomColor();
+                // Replace background param in src
+                let src = avatarImg.getAttribute('src');
+                src = src.replace(/background=[^&]+/, 'background=' + encodeURIComponent(color.replace(/[#()%,]/g, '')));
+                avatarImg.setAttribute('src', src);
+                // Add black border (already in style)
             }
         });
     </script>

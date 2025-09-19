@@ -129,27 +129,30 @@ def itr_view(request, cd, yr, sea):
 
 def user_view(request, uid):
     try:
-        u = User.objects.get(id = uid)
+        u = User.objects.get(id=uid)
         u2 = request.user
+        # Get user contributions (approved items)
+        user_contrib = None
+        from .models import Item
+        if hasattr(u, 'item_set'):
+            user_contrib = Item.objects.filter(op=u, appr=True)
         if request.method == 'POST':
             if u2 is not None and u2.is_authenticated and u == u2:
                 form = ProfileForm(request.POST, instance=u.profile)
                 pro = form.save(commit=False)
                 pro.upd = True
                 pro.save()
-                return render(request, 'main/user.htm', {'user_page': u, 'form': form})
+                return render(request, 'main/user.htm', {'user_page': u, 'form': form, 'user_contrib': user_contrib})
             else:
                 return HttpResponse('You shouldn\'t be here')
         if request.user.is_authenticated:
             if u == u2:
                 form = ProfileForm()
-                return render(request, 'main/user.htm', {'user_page': u, 'form': form})
+                return render(request, 'main/user.htm', {'user_page': u, 'form': form, 'user_contrib': user_contrib})
             form = UserReportForm()
-            return render(request, 'main/user.htm', {'user_page': u, 'report_form': form})
-        return render(request, 'main/user.htm', {'user_page': u})
+            return render(request, 'main/user.htm', {'user_page': u, 'report_form': form, 'user_contrib': user_contrib})
+        return render(request, 'main/user.htm', {'user_page': u, 'user_contrib': user_contrib})
     except (User.DoesNotExist, ValueError):
-        # ValueError will occur when someone tries /u/asdf (since asdf cannot be parsed as
-        # an integer)
         raise Http404('User not found')
 
 def add_comment(request, cd, yr, sea):

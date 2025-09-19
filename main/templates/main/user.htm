@@ -8,66 +8,71 @@
 {% block css %}<link rel="stylesheet" href="{% static 'main/css/user.css' %}">{% endblock %}
 
 {% block content %}
-  <div id="user-info">
-    About {{ user_page.name }}
-    {% if user.is_authenticated %}
-    {% if user_page == user %}
-    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#profile-modal-inner"><span class="oi oi-pencil"> </span></button>
-    {% else %}
-    <button id="u_{{ user_page.id }}" class="btn btn-secondary btn-sm btn-report" data-toggle="modal" data-target="#report-modal-inner"><span class="oi oi-warning"> </span></button>
-    {% endif %}
-    {% endif %}
-    <br>
-    {% if user_page.profile.upd %}
-      {{ user_page.profile.school }} <br>
-      {{ user_page.profile.prog }} <br>
-      {{ user_page.profile.batch }} <br>
-      <div class="markdown">{{ user_page.profile.about }}</div>
-    {% endif %}
+  <div id="user-info" class="container py-4" style="max-width:600px;">
+    <div class="card shadow-sm p-4 mb-4" style="border-radius:1.5rem; border:none;">
+      <div class="d-flex align-items-center mb-3">
+        <div class="flex-grow-1">
+          <h2 class="fw-bold mb-0" style="color:#2c3e50;">{{ user_page.name }}</h2>
+          <div class="text-muted">{{ user_page.email }}</div>
+        </div>
+        {% if user.is_authenticated and user_page == user %}
+          <button class="btn btn-warning btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#profile-modal-inner" style="color:#fff; background:#f59e0b; border:none; border-radius:2rem; font-weight:600;">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+        {% elif user.is_authenticated %}
+          <button id="u_{{ user_page.id }}" class="btn btn-outline-warning btn-sm btn-report ms-2" data-bs-toggle="modal" data-bs-target="#report-modal-inner" style="color:#f59e0b; border-color:#f59e0b; border-radius:2rem; font-weight:600;">
+            <i class="fas fa-flag"></i> Report
+          </button>
+        {% endif %}
+      </div>
+      <hr>
+      <div class="mb-2">
+        {% if user_page.profile.upd %}
+          <div><strong>School:</strong> {{ user_page.profile.school }}</div>
+          <div><strong>Program:</strong> {{ user_page.profile.prog }}</div>
+          <div><strong>Batch:</strong> {{ user_page.profile.batch }}</div>
+          <div class="markdown mt-2"><strong>About:</strong><br>{{ user_page.profile.about }}</div>
+        {% else %}
+          <div class="text-muted">No profile information added yet.</div>
+        {% endif %}
+      </div>
+    </div>
   </div>
   {% if user_contrib %}
-  <div id="user-contrib">
-    About {{ user_page.name }}'s contributions: <br>
-    <ul class="list-group">
-    {% for f in user_contrib %}
-      <li class="list-group-item"><a href="{{ f.fl.url }}">{{ f.name }}</a></li>
-    {% endfor %}
-    </ul>
+  <div id="user-contrib" class="container mb-4" style="max-width:600px;">
+    <div class="card shadow-sm p-4" style="border-radius:1.5rem; border:none;">
+      <h5 class="fw-bold mb-3" style="color:#2c3e50;">{{ user_page.name }}'s Contributions</h5>
+      <ul class="list-group list-group-flush">
+        {% for f in user_contrib %}
+          <li class="list-group-item"><a href="{{ f.fl.url }}" style="color:#f59e0b; font-weight:500;">{{ f.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
   {% endif %}
   {% if user.is_authenticated %}
   {% if user_page == user %}
   <!-- profile modal -->
   <div id="profile-modal">
-    <div class="modal fade" id="profile-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <h5 class="modal-title" id="profile-modal-header"> <span class="oi oi-pencil"></span> Edit </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div class="modal fade" id="profile-modal-inner" tabindex="-1" aria-labelledby="profile-modal-header" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:1.2rem;">
+          <div class="modal-header" style="border-bottom:1px solid #f59e0b33;">
+            <h5 class="modal-title" id="profile-modal-header"><i class="fas fa-edit"></i> Edit Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-
-          <div class="modal-body" id="profile-modal-body">
-            <div id="profile-modal-body-inner" class="container">
-
-              <form id="profile-form" method="post" action="">
+          <div class="modal-body">
+            <form id="profile-form" method="post" action="">
               {% csrf_token %}
               {% for field in form %}
-                <div class="form-group">
-                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                  {{ field }}
+                <div class="mb-3">
+                  <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                  {{ field|add_class:'form-control' }}
                 </div>
               {% endfor %}
-                <button type="submit" class="btn btn-primary"> Update </button>
-              </form>
-
-            </div>
+              <button type="submit" class="btn btn-warning w-100" style="color:#fff; background:#f59e0b; border:none; font-weight:600;">Update</button>
+            </form>
           </div>
-
-          <div class="modal-footer" id="profile-modal-footer">
-          </div>
-
         </div>
       </div>
     </div>
