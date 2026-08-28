@@ -5,8 +5,8 @@ NISER Archive
 
  * Sit tight. ~~If migrations fail, delete everything (the repo, the database, etc.) and start over.~~ (I have learnt this the hard way: DO NOT TRACK MIGRATIONS FILES, and everything works fine.)
  * Install:
-  * `python` : Install python 3.9.25 or lower preferably using pyenv(or the more modern uv) as django 2.2.28 does not support python 3.10 and above
-  * `postgresql` : Last checked with postgresql17
+    * `python` : Install python 3.9.25 or lower preferably using pyenv(or the more modern uv) as django 2.2.28 does not support python 3.10 and above
+    * `postgresql` : Last checked with postgresql17
  * Clone the repo.
  * Create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) using the python version you installed and run `pip install -r requirements.txt`.
  * You'll have to provide `/arc/local_settings.py`(look at the example file attached).
@@ -19,7 +19,7 @@ NISER Archive
    server, thats how the deployed server is running presently. Configuring an
    apache server is very machine-specific. Google how to do it on your
    machine.)
- * For verification mails, update the 'dmn' variable in views.py to 
+ * For verification mails, update the 'dmn' variable in views.py to the current ip/domain at which you are hosting the site.
  * Please let me know if you're unable to run it on your machine.
 
  #### TODO:
