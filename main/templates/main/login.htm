@@ -5,35 +5,55 @@
 {% block l3h %}Login{% endblock %}
 
 {% block content %}
-
-  {% if form.errors %}
-    {% for field in form %}
-      {% for error in field.errors %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%; border-radius: 1.5rem; border: none;">
+    <div class="text-center mb-4">
+      <img src="https://www.niser.ac.in/~smishra/event/2022sdg/static/cc_logo.png" alt="Archive" class="img-fluid mb-2" style="max-height: 80px;">
+      <h2 class="fw-bold mb-1" style="color:#2c3e50;">Login</h2>
+      <p class="text-muted mb-0" style="font-size:1rem;">Sign in to NISER Archive</p>
+    </div>
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
         <div class="alert alert-danger">
           <strong>{{ error|escape }}</strong>
         </div>
       {% endfor %}
-    {% endfor %}
-
-    {% for error in form.non_field_errors %}
-      <div class="alert alert-danger">
-        <strong>{{ error|escape }}</strong>
-      </div>
-    {% endfor %}
-  {% endif %}
-
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{field|add_class:'form-control'}}
-      </div>
-    {% endfor %}
-    <button class="btn btn-primary" type="submit">Login</button>
-  </form>
-  <br>
-  <p>
-  Forgot your password? <a href="{% url 'password_reset' %}"> Click here. </a>
-  </p>
+    {% endif %}
+    <form method="post" autocomplete="on">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+          {{field|add_class:'form-control'}}
+        </div>
+      {% endfor %}
+      <button class="btn btn-warning w-100 login-btn" style="color:#fff; background-color:#f59e0b; border-color:#f59e0b; font-weight:600;" type="submit">Login</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{% url 'password_reset' %}" style="color:#f59e0b;">Forgot your password?</a>
+    </div>
+    <div class="text-center mt-2">
+      <span>Don't have an account?</span> <a href="{% url 'signup' %}" style="color:#f59e0b; font-weight:600;">Sign Up</a>
+    </div>
+  </div>
+</div>
+<style>
+  .login-btn {
+    transition: background 0.18s, box-shadow 0.18s, transform 0.16s, filter 0.18s;
+  }
+  .login-btn:hover, .login-btn:focus {
+    background-color: #e09c1b !important;
+    color: #fff !important;
+    box-shadow: 0 8px 24px 0 #f59e0bcc, 0 0 0 3px #f59e0b44 !important;
+    transform: translateY(-4px) scale(1.07) rotate(-2deg);
+    filter: brightness(1.08) drop-shadow(0 0 8px #f59e0b88);
+  }
+</style>
 {% endblock %}

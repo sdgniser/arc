@@ -1,0 +1,67 @@
+{% extends 'main/base.htm' %}
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Search Results for "{{ query }}"</h2>
+    {% if not schools and not courses and not itrs and not items %}
+        <div class="alert alert-warning">No results found.</div>
+    {% endif %}
+
+    {% if schools %}
+    <h4 class="mt-4">Schools</h4>
+    <ul class="list-group mb-4">
+        {% for school in schools %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-university me-2"></i>{{ school.name }} <span class="text-muted">({{ school.abbr|upper }})</span></span>
+            <a href="{% url 'school' school.abbr %}" class="btn btn-outline-primary btn-sm">View</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if courses %}
+    <h4 class="mt-4">Courses</h4>
+    <ul class="list-group mb-4">
+        {% for course in courses %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-book me-2"></i>{{ course.code|upper }} - {{ course.name }} <span class="text-muted">({{ course.school.name }})</span></span>
+            <a href="{% url 'course' course.code %}" class="btn btn-outline-primary btn-sm">View</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if itrs %}
+    <h4 class="mt-4">Course Iterations</h4>
+    <ul class="list-group mb-4">
+        {% for itr in itrs %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-calendar-alt me-2"></i>{{ itr.course.code|upper }} - {{ itr.sem_name }} {{ itr.year }} <span class="text-muted">({{ itr.course.school.name }})</span></span>
+            <a href="{% url 'itr' itr.course.code itr.year itr.sem_name %}" class="btn btn-outline-primary btn-sm">View</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if items %}
+    <h4 class="mt-4">Resources</h4>
+    <div class="row">
+        {% for item in items %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.desc|truncatewords:20 }}</p>
+                    <a href="{% url 'file' 'self' item.fl %}" class="btn btn-primary btn-sm">View Resource</a>
+                </div>
+                <div class="card-footer text-muted small">
+                    {{ item.itr.course.school.name }} &middot; {{ item.itr.course.code }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

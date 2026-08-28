@@ -5,51 +5,43 @@
 {% block title %}{{ crs }}{% endblock %}
 {% block l3h %}{{ crs }}{% endblock %}
 
-{% block content %}	
-  {% if itr_list %}
-    <ul class="list-group">
-      {% for i in itr_list %}
-      <li class="list-group-item"><a href="{% url 'itr' crs.code i.year i.sem_name.lower %}">{{ i }} (Instructor: {{ i.inst }})</a></li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no iterations.</p>
-  {% endif %}
-
-  {% if user.is_authenticated %}
-    <br>
-    <button type="button" id="itr-modal-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#itr-modal-inner">
-      <span class="oi oi-plus"> </span>  Add
-    </button>
-    <br>
-
-    <!-- add-itr modal -->
-    <div id="itr-modal">
-      <div class="modal fade" id="itr-modal-inner" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-
-            <div class="modal-header">
-              <h5 class="modal-title" id="itr-modal-header"> Add a new iteration to {{ crs.code.upper }} </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body" id="itr-modal-body">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div>
-
-            <div class="modal-footer" id="itr-modal-footer">
-            </div>
-
+{% block content %}
+<style>
+  .list-group-item.itr-hover {
+    transition: box-shadow 0.18s, transform 0.16s, background 0.18s;
+    cursor: pointer;
+  }
+  .list-group-item.itr-hover:hover {
+    background: #f9fafb;
+    box-shadow: 0 8px 24px 0 #f59e0b22, 0 0 0 3px #f59e0b22;
+    transform: translateY(-2px) scale(1.02);
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div style="width:100%; max-width: 800px;">
+    {% if itr_list %}
+      <ul class="list-group shadow-sm w-100 mb-3">
+        {% for i in itr_list %}
+        <li class="list-group-item d-flex justify-content-between align-items-center py-3 itr-hover" style="border-radius: 12px; margin-bottom: 0.5rem;">
+          <div>
+            <a href="{% url 'itr' crs.code i.year i.sem_name.lower %}" class="fw-semibold text-decoration-none" style="color:#34495e; font-size:1.08rem;">{{ i }} (Instructor: {{ i.inst }})</a>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- end add-itr modal -->
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>There are no iterations.</p>
+    {% endif %}
 
-  {% endif %}
+    {% if user.is_authenticated %}
+      <div class="mb-4 text-end">
+        <a href="{% url 'add_itr' crs.code %}" class="btn btn-primary btn-sm">
+          <span class="oi oi-plus"></span> Add Iteration
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}

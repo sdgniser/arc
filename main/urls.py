@@ -1,4 +1,6 @@
 from django.urls import path, include
+from django.shortcuts import render
+from .views import stat_view
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -10,19 +12,20 @@ pw_reset_view = auth_views.PasswordResetView.as_view(template_name='main/passwor
 urlpatterns = [
     path('', views.index_view, name='home'),
     #path('login/', views.login, name = 'login'),
-    #path('logout/', views.login, name = 'logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('login/', auth_views.LoginView.as_view(template_name='main/login.htm')),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.htm')),
     path('password_reset/', pw_reset_view),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='main/password-reset-done.htm')),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='main/password-reset-confirm.htm')),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='main/password-reset-complete.htm')),
     path('signup/', views.signup, name='signup'),
+    
 
-    path('', include('authtools.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 
     path('u/<uid>/', views.user_view, name='user'),
     path('u/verify/<uid>/<vid>/', views.verify, name='verify'),
-
     path('s/<abbrev>/', views.school_view, name='school'),
     path('s/<abbrev>/add/', views.add_crs, name='add_crs'),
 
@@ -43,4 +46,6 @@ urlpatterns = [
     
     path('faq/', views.faq, name='faq'),
     path('log/', views.log_view, name='log'),
+    path('stat.htm', stat_view, name='stat'),
+    path('search/', views.search, name='search'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
