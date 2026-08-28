@@ -1,61 +1,56 @@
+{% extends 'main/base.htm' %}
 {% load widget_tweaks %}
-
-{% if success %}
-<div class="alert alert-success" role="alert">
-  <h4 class="alert-heading">Iteration added.</h4>
-  <p>The the iteration has been added.</p>
-  <p class="mb-0">It will be reviewed by a moderator before it appears on the
-  main list. However you can still add content to it
-  <a href="{% url 'itr' crs.code itr.year itr.sem_name.lower %}">here.</a></p>
-  <p class="mb-0">Thank you for your contribution!</p>
-</div>
-{% elif exists %}
-<div class="alert alert-warning" role="alert">
-  <h4 class="alert-heading">Iteration already exists.</h4>
-  <p>{{ itr }} already exists.</p>
-  <p class="mb-0">You can visit the page here
-  <a href="{% url 'itr' crs.code itr.year itr.sem_name.lower %}">here.</a></p>
-</div>
-{% else %}
-
-  {% if form.errors %}
-
-    {% for field in form %}
-      {% for error in field.errors %}
-        <div class="alert alert-danger">
-          <strong>{{ error|escape }}</strong>
-        </div>
-      {% endfor %}
-    {% endfor %}
-
-    {% for error in form.non_field_errors %}
-      <div class="alert alert-danger">
-        <strong>{{ error|escape }}</strong>
-      </div>
-    {% endfor %}
-
-  {% endif %}
-
-  <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/" onsubmit="return false;">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="form-group">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <label for="{{ field.id_for_label }}">
-              {{ field.label }}
-            </label>
+{% block title %}Add Iteration{% endblock %}
+{% block l3h %}Add Iteration{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="bg-white p-4 rounded shadow-sm">
+        {% if success %}
+          <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Iteration added.</h4>
+            <p>The iteration has been added.</p>
+            <p class="mb-0">It will be reviewed by a moderator before it appears on the main list. However you can still add content to it <a href="{% url 'itr' crs.code itr.year itr.sem_name.lower %}">here.</a></p>
+            <p class="mb-0">Thank you for your contribution!</p>
           </div>
-          <div class="col">
-            {% if field.help_text %}<a tabindex="0" role="button" type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="{{ field.help_text }}"><span class="oi oi-info"></span></a> {% endif %}
+        {% elif exists %}
+          <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Iteration already exists.</h4>
+            <p>{{ itr }} already exists.</p>
+            <p class="mb-0">You can visit the page here <a href="{% url 'itr' crs.code itr.year itr.sem_name.lower %}">here.</a></p>
           </div>
-        </div>
+        {% else %}
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+                </div>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field|add_class:'form-control' }}
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <button class="btn btn-primary w-100" type="submit">Submit</button>
+          </form>
+        {% endif %}
       </div>
-      {{ field }}
     </div>
-    {% endfor %}
-    <button class="btn btn-primary" type="submit">Submit</button>
-  </form>
-
-{% endif %}
+  </div>
+</div>
+{% endblock %}

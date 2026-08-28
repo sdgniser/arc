@@ -4,18 +4,22 @@ NISER Archive
 #### How to run a local instance?
 
  * Sit tight. ~~If migrations fail, delete everything (the repo, the database, etc.) and start over.~~ (I have learnt this the hard way: DO NOT TRACK MIGRATIONS FILES, and everything works fine.)
- * Install: `python`, `postgresql`
+ * Install:
+    * `python` : Install python 3.9.25 or lower preferably using pyenv(or the more modern uv) as django 2.2.28 does not support python 3.10 and above
+    * `postgresql` : Last checked with postgresql18
  * Clone the repo.
- * Create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) and run `pip install -r requirements.txt`.
- * You'll have to provide [`/arc/local_settings.py`](https://pastebin.com/S9yV4yj5).
- * ~~You'll also have to fix some of the absolute paths in `/arc/settings.py` because~~ I am lazy.
- * `cd` to `/main/static/main` and
+ * Create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) using the python version you installed and run `pip install -r requirements.txt`.
+ * You'll have to provide `/arc/local_settings.py`(look at the example file attached).
+ * Install nodejs and npm systemwide(if not present already) and then 
+ `cd` to `/main/static/main` and
  `npm install jquery popper.js bootstrap katex showdown open-iconic`.
+ * Make a new database in postgresql and register the database and db account credentials in local_settings.py
  * `cd` to the cloned repo (while you're still in virtual env) and run: `python manage.py collectstatic`, `python manage.py makemigrations main`, `python manage.py migrate`
  * Start the server: `python manage.py runserver` or you can run an apache
    server, thats how the deployed server is running presently. Configuring an
    apache server is very machine-specific. Google how to do it on your
    machine.)
+ * For verification mails, update the 'dmn' variable in views.py to the current ip/domain at which you are hosting the site.
  * Please let me know if you're unable to run it on your machine.
 
  #### TODO:

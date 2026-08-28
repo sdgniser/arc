@@ -5,7 +5,6 @@ __pycache__/
 __init__.py
 local_settings.py
 
-.env
 db.sqlite3
 
 /static/
@@ -13,7 +12,6 @@ db.sqlite3
 /main/log
 /main/migrations
 
-env/
 
 node_modules/
 package-lock.json
@@ -22,3 +20,7 @@ tags
 gunicorn/gunicorn.conf.py
 gunicorn/gunicorn.env
 recom_data.csv
+
+data/
+venv/
+staticfiles/

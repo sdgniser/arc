@@ -5,27 +5,24 @@ Python file to handle the recommendation system.
 import os
 import pandas as pd
 
+# Dynamically get the directory where recom.py lives
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Create an absolute path for the CSV file
+CSV_PATH = os.path.join(BASE_DIR, "recom_data.csv")
+
 
 def start():
     """
     Function to check if the file to store the user file access data
     already exists or not, if not then create one.
-
-    Parameters
-    ----------
-    None
-
-    Returns
-    -------
-    None
     """
-    if not os.path.exists("recom_data.csv"):
-        with open("recom_data.csv", "a") as fp:
+    if not os.path.exists(CSV_PATH):
+        with open(CSV_PATH, "a") as fp:
             fp.write("Files")
 
     global df, val_count
     val_count = 0
-    df = pd.read_csv("recom_data.csv", index_col="Files")
+    df = pd.read_csv(CSV_PATH, index_col="Files")
 
 
 start()  # Call the start function
@@ -34,19 +31,7 @@ start()  # Call the start function
 def get_recom(user_id):
     """
     Function to get the list of recommended files for a given user.
-
-    Parameters
-    ----------
-    user_id : int, str
-        Unique ID of the user.
-
-    Returns
-    -------
-    list
-        A list of recommended files sorted in descending order of priority.
-        With max length of list equals to 10.
     """
-
     user_id = str(user_id)
 
     if user_id in df.columns:
@@ -71,19 +56,7 @@ def get_recom(user_id):
 def update(file, user_id):
     """
     Function to update the list of files accessed by user.
-
-    Parameters
-    ----------
-    file : str
-        Name of the file being accessed by user.
-    user_id : int, str
-        Unique ID of the user accessing the file.
-
-    Returns
-    -------
-    None
     """
-
     user_id = str(user_id)
 
     if user_id in df.columns:
@@ -100,5 +73,6 @@ def update(file, user_id):
     val_count += 1
 
     if val_count >= 5:
-        df.to_csv("recom_data.csv")
+        # Update to use the absolute path when saving!
+        df.to_csv(CSV_PATH)
         val_count = 0
